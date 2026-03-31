@@ -6,7 +6,6 @@ import {
   useRef,
   useState,
   type CSSProperties,
-  type PointerEvent as ReactPointerEvent,
 } from "react";
 
 import type { ImageAsset } from "@/lib/content";
@@ -17,11 +16,13 @@ type HeroIntroProps = {
   image: ImageAsset;
 };
 
-type OverlayStage = "visible" | "exiting" | "done";
+type OverlayStage = "idle" | "visible" | "exiting" | "done";
 
 const easing = "cubic-bezier(0.22, 1, 0.36, 1)";
 
-const overlayHoldMs = 1500;
+const overlayPauseMs = 220;
+const overlayEnterMs = 520;
+const overlayHoldMs = 1100;
 const overlayExitMs = 520;
 
 export function HeroIntro({
@@ -29,8 +30,7 @@ export function HeroIntro({
   finalPhrase,
   image,
 }: HeroIntroProps) {
-  const [overlayStage, setOverlayStage] = useState<OverlayStage>("visible");
-  const [spotlight, setSpotlight] = useState({ x: 66, y: 42 });
+  const [overlayStage, setOverlayStage] = useState<OverlayStage>("idle");
   const timersRef = useRef<number[]>([]);
 
   useEffect(() => {
@@ -49,55 +49,69 @@ export function HeroIntro({
 
     clearTimers();
 
-    schedule(overlayHoldMs, () => {
-      setOverlayStage("exiting");
+    schedule(overlayPauseMs, () => {
+      setOverlayStage("visible");
 
-      schedule(overlayExitMs, () => {
-        setOverlayStage("done");
+      schedule(overlayEnterMs + overlayHoldMs, () => {
+        setOverlayStage("exiting");
+
+        schedule(overlayExitMs, () => {
+          setOverlayStage("done");
+        });
       });
     });
 
     return clearTimers;
   }, [introPhrase]);
 
-  const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
-    const bounds = event.currentTarget.getBoundingClientRect();
-    setSpotlight({
-      x: ((event.clientX - bounds.left) / bounds.width) * 100,
-      y: ((event.clientY - bounds.top) / bounds.height) * 100,
-    });
-  };
-
-  const handlePointerLeave = () => {
-    setSpotlight({ x: 66, y: 42 });
-  };
-
-  const spotlightStyle = {
-    background: `radial-gradient(15rem circle at ${spotlight.x}% ${spotlight.y}%, rgba(255,255,255,0.05), rgba(255,255,255,0.018) 22%, transparent 60%)`,
-  };
-
   const overlayStyle: CSSProperties =
+    overlayStage === "idle"
+      ? {
+          opacity: 0,
+          transform: "translateY(12px)",
+          pointerEvents: "none",
+        }
+      : overlayStage === "visible"
+        ? {
+            opacity: 1,
+            transform: "translateY(0)",
+            transition: `opacity ${overlayEnterMs}ms ${easing}, transform ${overlayEnterMs}ms ${easing}`,
+          }
+        : overlayStage === "exiting"
+          ? {
+              opacity: 0,
+              transform: "translateY(-8px)",
+              transition: `opacity ${overlayExitMs}ms ${easing}, transform ${overlayExitMs}ms ${easing}`,
+            }
+          : {
+              opacity: 0,
+              transform: "translateY(-8px)",
+              pointerEvents: "none",
+            };
+
+  const plateStyle: CSSProperties =
     overlayStage === "visible"
       ? {
           opacity: 1,
           transform: "translateY(0)",
+          transition: `opacity ${overlayEnterMs}ms ${easing}, transform ${overlayEnterMs}ms ${easing}`,
         }
       : overlayStage === "exiting"
         ? {
-          opacity: 0,
-            transform: "translateY(-10px)",
+            opacity: 0,
+            transform: "translateY(-8px)",
             transition: `opacity ${overlayExitMs}ms ${easing}, transform ${overlayExitMs}ms ${easing}`,
           }
         : {
             opacity: 0,
-            transform: "translateY(-10px)",
+            transform: "translateY(12px)",
             pointerEvents: "none",
           };
 
   const strikeStyle: CSSProperties =
     overlayStage === "exiting"
       ? {
-          opacity: 0.82,
+          opacity: 0.95,
           transform: "scaleX(1)",
           transition: `transform ${overlayExitMs}ms ${easing}, opacity ${overlayExitMs}ms ${easing}`,
         }
@@ -107,11 +121,7 @@ export function HeroIntro({
         };
 
   return (
-    <div
-      className="relative isolate min-h-[13.5rem] overflow-hidden rounded-[2.1rem] border border-white/10 shadow-[0_30px_90px_rgba(0,0,0,0.35)] sm:min-h-[15rem] lg:min-h-[31rem] lg:rounded-[2.75rem]"
-      onPointerMove={handlePointerMove}
-      onPointerLeave={handlePointerLeave}
-    >
+    <div className="relative isolate min-h-[13.5rem] overflow-hidden rounded-[2.1rem] border border-white/10 shadow-[0_30px_90px_rgba(0,0,0,0.35)] sm:min-h-[15rem] lg:min-h-[31rem] lg:rounded-[2.75rem]">
       <Image
         src={image.src}
         alt={image.alt}
@@ -124,7 +134,6 @@ export function HeroIntro({
       <div className="absolute inset-0 bg-[linear-gradient(145deg,rgba(5,7,10,0.94)_6%,rgba(5,7,10,0.66)_42%,rgba(5,7,10,0.86)_100%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.06),transparent_32%)] opacity-70" />
       <div className="absolute inset-x-0 bottom-0 h-[58%] bg-[linear-gradient(180deg,transparent,rgba(7,10,14,0.92))]" />
-      <div className="absolute inset-0 mix-blend-screen" style={spotlightStyle} />
 
       <div className="relative flex h-full flex-col p-4 sm:p-6 lg:p-10">
         <div className="hidden max-w-[14rem] lg:block">
@@ -139,15 +148,22 @@ export function HeroIntro({
             <div className="relative h-[8.8rem] w-full max-w-[19rem] pr-3">
               <div
                 aria-hidden="true"
-                className="absolute inset-x-0 top-0 text-right text-[clamp(1.55rem,2.55vw,2.4rem)] font-semibold leading-none tracking-[-0.08em] text-white/90 [text-shadow:0_12px_28px_rgba(0,0,0,0.42)]"
-                style={overlayStyle}
+                className="absolute right-0 top-0"
+                style={plateStyle}
               >
-                <span>{introPhrase}</span>
-                <span
-                  aria-hidden="true"
-                  className="absolute left-[6%] right-0 top-1/2 h-px origin-right bg-white/42"
-                  style={strikeStyle}
-                />
+                <div className="relative rounded-full border border-white/18 bg-[rgba(4,6,9,0.82)] px-5 py-3 shadow-[0_18px_45px_rgba(0,0,0,0.44)]">
+                  <div
+                    className="relative text-right text-[clamp(1.75rem,2.8vw,2.65rem)] font-semibold leading-none tracking-[-0.085em] text-white [text-shadow:0_18px_36px_rgba(0,0,0,0.58)]"
+                    style={overlayStyle}
+                  >
+                    <span>{introPhrase}</span>
+                    <span
+                      aria-hidden="true"
+                      className="absolute left-2 right-2 top-1/2 h-[2px] origin-right bg-white/90"
+                      style={strikeStyle}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
