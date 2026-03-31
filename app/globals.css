@@ -135,19 +135,19 @@ button {
 
 .hero-enter {
   opacity: 0;
-  animation: hero-rise 0.92s var(--ease-out) forwards;
+  animation: hero-rise 1.02s var(--ease-out) forwards;
 }
 
 .hero-enter-delay-1 {
-  animation-delay: 0.18s;
+  animation-delay: 0.22s;
 }
 
 .hero-enter-delay-2 {
-  animation-delay: 0.34s;
+  animation-delay: 0.44s;
 }
 
 .hero-enter-delay-3 {
-  animation-delay: 0.52s;
+  animation-delay: 0.68s;
 }
 
 @media (prefers-reduced-motion: reduce) {

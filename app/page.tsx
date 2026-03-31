@@ -31,16 +31,16 @@ function SectionHeader({
 
 const mobileProofCopy: Record<string, { problem: string; outcome: string }> = {
   "Кухня": {
-    problem: "Хранение мешает, движения лишние.",
-    outcome: "У всего своё место, кухня работает спокойно.",
+    problem: "Лишние движения каждый день.",
+    outcome: "У всего есть своё место.",
   },
   "Шкаф": {
     problem: "Внутри вечный компромисс.",
-    outcome: "Хранение закрывает вопрос без раздражения.",
+    outcome: "Хранение закрывает вопрос.",
   },
   "Комната": {
-    problem: "Пространство спорит с вашим ритмом.",
-    outcome: "Комната поддерживает, а не мешает.",
+    problem: "Пространство мешает ритму.",
+    outcome: "Комната работает на вас.",
   },
 };
 
@@ -78,22 +78,22 @@ function ProofLeadCard({ card }: { card: ProofCard }) {
           </span>
         </div>
 
-        <div className="grid gap-4 lg:max-w-[30rem]">
-          <div className="rounded-[1.6rem] border border-white/8 bg-[rgba(5,7,10,0.56)] p-4 backdrop-blur-md sm:rounded-[1.8rem] sm:p-5">
+          <div className="grid gap-4 lg:max-w-[30rem]">
+          <div className="rounded-[1.6rem] border border-white/7 bg-[rgba(5,7,10,0.62)] p-4 backdrop-blur-md sm:rounded-[1.8rem] sm:p-5">
             <p className="kicker text-white/26">Было</p>
-            <p className="mt-4 text-sm leading-6 text-white/32 line-through decoration-white/10 sm:hidden">
+            <p className="mt-4 text-sm leading-6 text-white/24 line-through decoration-white/10 sm:hidden">
               {compact.problem}
             </p>
-            <p className="mt-4 hidden text-base leading-7 text-white/34 line-through decoration-white/12 sm:block sm:text-lg">
+            <p className="mt-4 hidden text-base leading-7 text-white/28 line-through decoration-white/12 sm:block sm:text-lg">
               {card.problem}
             </p>
           </div>
-          <div className="rounded-[1.7rem] border border-[rgba(222,214,199,0.3)] bg-[rgba(222,214,199,0.16)] p-4 shadow-[0_16px_34px_rgba(0,0,0,0.18)] backdrop-blur-md sm:rounded-[1.9rem] sm:p-5">
+          <div className="rounded-[1.7rem] border border-[rgba(222,214,199,0.34)] bg-[rgba(222,214,199,0.2)] p-4 shadow-[0_16px_34px_rgba(0,0,0,0.18)] backdrop-blur-md sm:rounded-[1.9rem] sm:p-5">
             <p className="kicker text-[var(--color-accent)]">Стало</p>
-            <p className="mt-4 text-sm leading-6 text-white/94 sm:hidden">
+            <p className="mt-4 text-sm leading-6 text-white sm:hidden">
               {compact.outcome}
             </p>
-            <p className="mt-4 hidden text-base leading-7 text-white/94 sm:block sm:text-lg">
+            <p className="mt-4 hidden text-base leading-7 text-white sm:block sm:text-lg">
               {card.outcome}
             </p>
           </div>
@@ -137,22 +137,22 @@ function ProofSmallCard({ card, index }: { card: ProofCard; index: number }) {
         <h3 className="mt-4 text-xl font-semibold tracking-[-0.05em] text-white">
           {card.label}
         </h3>
-        <div className="mt-5 grid gap-3">
-          <div className="rounded-[1.25rem] border border-white/7 bg-[rgba(5,7,10,0.48)] p-3.5 sm:rounded-[1.35rem] sm:p-4">
+          <div className="mt-5 grid gap-3">
+          <div className="rounded-[1.25rem] border border-white/7 bg-[rgba(5,7,10,0.58)] p-3.5 sm:rounded-[1.35rem] sm:p-4">
             <p className="kicker text-white/24">Было</p>
-            <p className="mt-3 text-sm leading-6 text-white/34 line-through decoration-white/10 sm:hidden">
+            <p className="mt-3 text-sm leading-6 text-white/24 line-through decoration-white/10 sm:hidden">
               {compact.problem}
             </p>
-            <p className="mt-3 hidden text-sm leading-6 text-white/36 line-through decoration-white/10 sm:block">
+            <p className="mt-3 hidden text-sm leading-6 text-white/28 line-through decoration-white/10 sm:block">
               {card.problem}
             </p>
           </div>
-          <div className="rounded-[1.35rem] border border-[rgba(222,214,199,0.22)] bg-[rgba(222,214,199,0.12)] p-3.5 sm:rounded-[1.45rem] sm:p-4">
+          <div className="rounded-[1.35rem] border border-[rgba(222,214,199,0.26)] bg-[rgba(222,214,199,0.15)] p-3.5 sm:rounded-[1.45rem] sm:p-4">
             <p className="kicker text-[var(--color-accent)]">Стало</p>
-            <p className="mt-3 text-sm leading-6 text-white/88 sm:hidden">
+            <p className="mt-3 text-sm leading-6 text-white/96 sm:hidden">
               {compact.outcome}
             </p>
-            <p className="mt-3 hidden text-sm leading-6 text-white/86 sm:block">
+            <p className="mt-3 hidden text-sm leading-6 text-white/94 sm:block">
               {card.outcome}
             </p>
           </div>
@@ -241,7 +241,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[var(--max-width)] px-5 py-12 sm:px-6 sm:py-16 lg:px-10 lg:pb-12 lg:pt-16">
+      <section className="mx-auto max-w-[var(--max-width)] px-5 py-12 sm:px-6 sm:py-16 lg:px-10 lg:pb-8 lg:pt-16">
         <Reveal>
           <SectionHeader
             kicker="Было → стало"
@@ -265,7 +265,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[var(--max-width)] px-5 py-10 sm:px-6 sm:py-12 lg:px-10 lg:pb-16 lg:pt-7">
+      <section className="mx-auto max-w-[var(--max-width)] px-5 py-10 sm:px-6 sm:py-12 lg:px-10 lg:pb-14 lg:pt-2">
         <Reveal>
           <SectionHeader
             kicker="Простота"
@@ -274,7 +274,7 @@ export default function Home() {
           />
         </Reveal>
 
-        <div className="mt-8 grid gap-4 md:hidden">
+        <div className="mt-7 grid gap-4 md:hidden">
           {steps.map((step, index) => (
             <Reveal key={step.title} delay={0.04 * index} y={12}>
               <article className="rounded-[1.5rem] border border-white/8 bg-white/[0.02] p-4">
@@ -292,7 +292,7 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="relative mt-10 hidden md:block">
+        <div className="relative mt-8 hidden md:block">
           <div className="absolute left-0 right-0 top-[1.2rem] hidden h-px bg-white/10 xl:block" />
 
           <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-4 xl:gap-6">
@@ -318,7 +318,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[var(--max-width)] px-5 pb-20 pt-10 sm:px-6 sm:pt-12 lg:px-10 lg:pb-24 lg:pt-14">
+      <section className="mx-auto max-w-[var(--max-width)] px-5 pb-20 pt-8 sm:px-6 sm:pt-10 lg:px-10 lg:pb-24 lg:pt-10">
         <Reveal>
           <div className="relative overflow-hidden rounded-[2.35rem] border border-white/10 bg-[linear-gradient(145deg,rgba(18,22,29,0.98),rgba(9,12,16,0.94))] px-5 py-10 shadow-[0_34px_90px_rgba(0,0,0,0.3)] sm:rounded-[2.9rem] sm:px-10 sm:py-16 lg:px-14 lg:py-18">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(222,214,199,0.12),transparent_30%),radial-gradient(circle_at_90%_100%,rgba(255,255,255,0.05),transparent_30%)]" />
@@ -333,24 +333,26 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="rounded-[1.6rem] border border-white/10 bg-[rgba(255,255,255,0.02)] p-5 backdrop-blur-sm sm:rounded-[1.8rem] sm:p-6">
+              <div className="rounded-[1.6rem] border border-[rgba(222,214,199,0.12)] bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.018))] p-5 backdrop-blur-sm sm:rounded-[1.8rem] sm:p-6">
                 <p className="kicker text-[var(--color-accent)]">Точка входа</p>
                 <Link
                   href={primaryContact.href}
                   target="_blank"
                   rel="noreferrer"
-                  className="group mt-5 block rounded-[1.45rem] border border-[rgba(222,214,199,0.18)] bg-[linear-gradient(180deg,rgba(222,214,199,0.12),rgba(222,214,199,0.05))] px-4 py-4 shadow-[0_18px_42px_rgba(0,0,0,0.2)]"
+                  className="group mt-5 block rounded-[1.45rem] border border-[rgba(222,214,199,0.22)] bg-[linear-gradient(180deg,rgba(222,214,199,0.14),rgba(222,214,199,0.06))] px-4 py-4 shadow-[0_18px_42px_rgba(0,0,0,0.2)]"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <p className="text-base font-medium text-white">{primaryContact.label}</p>
+                      <p className="text-lg font-semibold tracking-[-0.03em] text-white">
+                        {primaryContact.label}
+                      </p>
                       {primaryContact.note ? (
-                        <p className="mt-2 text-sm leading-6 text-white/58">
+                        <p className="mt-2 text-sm leading-6 text-white/62">
                           {primaryContact.note}
                         </p>
                       ) : null}
                     </div>
-                    <span className="text-sm text-white/42 transition-transform duration-200 group-hover:translate-x-1">
+                    <span className="text-sm text-white/46 transition-transform duration-200 group-hover:translate-x-1">
                       →
                     </span>
                   </div>
@@ -364,22 +366,25 @@ export default function Home() {
                   {finalCta.buttonLabel}
                 </Link>
                 <div className="mt-6 h-px w-20 bg-[linear-gradient(90deg,rgba(222,214,199,0.68),transparent)]" />
-                <div className="mt-5 grid gap-3">
+                <div className="mt-5">
+                  <p className="kicker text-white/30">Дополнительно</p>
+                </div>
+                <div className="mt-3 grid gap-1.5">
                   {secondaryContactLinks.map((contact) => (
                     <Link
                       key={contact.label}
                       href={contact.href}
                       target="_blank"
                       rel="noreferrer"
-                      className="group flex items-start justify-between gap-4 rounded-[1.15rem] border border-white/7 bg-white/[0.02] px-4 py-3"
+                      className="group flex items-start justify-between gap-4 rounded-[1rem] px-1 py-2"
                     >
                       <div>
-                        <p className="text-sm font-medium text-white/74">{contact.label}</p>
+                        <p className="text-sm font-medium text-white/58">{contact.label}</p>
                         {contact.note ? (
-                          <p className="mt-1 text-xs leading-5 text-white/38">{contact.note}</p>
+                          <p className="mt-1 text-xs leading-5 text-white/32">{contact.note}</p>
                         ) : null}
                       </div>
-                      <span className="text-sm text-white/24 transition-transform duration-200 group-hover:translate-x-1">
+                      <span className="text-sm text-white/18 transition-transform duration-200 group-hover:translate-x-1">
                         →
                       </span>
                     </Link>
