@@ -236,7 +236,11 @@ export default function Home() {
           </div>
 
           <div className="pt-1 sm:pt-2 lg:pt-0">
-            <HeroIntro phrases={hero.rotatingPhrases} image={hero.image} />
+            <HeroIntro
+              introPhrase={hero.introPhrase}
+              finalPhrase={hero.finalPhrase}
+              image={hero.image}
+            />
           </div>
         </div>
       </section>

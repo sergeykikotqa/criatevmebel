@@ -15,7 +15,8 @@ export type HeroContent = {
   description: string;
   primaryCta: string;
   secondaryCta?: string;
-  rotatingPhrases: string[];
+  introPhrase: string;
+  finalPhrase: string;
   image: ImageAsset;
 };
 
@@ -76,12 +77,8 @@ export const landingContent: LandingContent = {
       'Для тех, у кого "временно", "потом заменим" и "ну вроде нормально" затянулось на годы.',
     primaryCta: "Обсудить проект",
     secondaryCta: "Хочу такой стиль",
-    rotatingPhrases: [
-      "пока сойдёт",
-      "потом переделаем",
-      "ну вроде норм",
-      "нормально сделано",
-    ],
+    introPhrase: "пока сойдёт",
+    finalPhrase: "нормально сделано",
     image: {
       src: publicAsset("/hero-lounge.jpg"),
       alt: "Светлая гостиная с встроенной мебелью, мягким светом и ощущением простора.",
