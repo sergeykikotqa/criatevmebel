@@ -250,7 +250,7 @@ export default function Home() {
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.06),transparent_32%)] opacity-70" />
               <div className="absolute inset-x-0 bottom-0 h-[58%] bg-[linear-gradient(180deg,transparent,rgba(7,10,14,0.92))]" />
 
-              <div className="relative flex h-full flex-col p-4 sm:p-6 lg:p-10">
+              <div className="relative flex h-full flex-col gap-6 p-4 sm:gap-7 sm:p-6 lg:gap-8 lg:p-10">
                 <div className="hidden max-w-[14rem] lg:block">
                   <p className="kicker text-white/40">Временные решения</p>
                   <p className="mt-3 text-sm leading-6 text-white/56">
@@ -258,9 +258,7 @@ export default function Home() {
                   </p>
                 </div>
 
-                <div className="flex-1" />
-
-                <div className="w-fit max-w-[13.5rem] rounded-[1.6rem] border border-[rgba(222,214,199,0.2)] bg-[linear-gradient(180deg,rgba(9,13,18,0.82),rgba(9,13,18,0.52))] px-4 py-4 backdrop-blur-md sm:max-w-[15rem] sm:px-5 lg:max-w-full lg:rounded-[1.8rem] lg:border-white/14 lg:bg-[linear-gradient(180deg,rgba(10,14,19,0.78),rgba(10,14,19,0.44))] lg:px-6 lg:py-5">
+                <div className="mt-2 w-fit max-w-[13.5rem] rounded-[1.6rem] border border-[rgba(222,214,199,0.2)] bg-[linear-gradient(180deg,rgba(9,13,18,0.82),rgba(9,13,18,0.52))] px-4 py-4 backdrop-blur-md sm:mt-3 sm:max-w-[15rem] sm:px-5 lg:mt-4 lg:max-w-full lg:rounded-[1.8rem] lg:border-white/14 lg:bg-[linear-gradient(180deg,rgba(10,14,19,0.78),rgba(10,14,19,0.44))] lg:px-6 lg:py-5">
                   <p className="kicker text-[var(--color-accent)]">Остаётся</p>
                   <p className="mt-3 text-[clamp(1.8rem,8vw,2.7rem)] font-semibold leading-[0.92] tracking-[-0.085em] text-white sm:mt-4 lg:text-[clamp(2rem,3.2vw,3.7rem)] lg:leading-none">
                     {hero.finalPhrase}
