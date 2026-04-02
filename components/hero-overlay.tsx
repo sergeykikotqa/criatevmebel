@@ -90,21 +90,21 @@ function AnimatedHeroOverlay({
       data-hero-overlay
       className="pointer-events-none absolute inset-x-0 top-0 z-20 hidden hero:flex"
     >
-      <div className="ml-auto w-full max-w-[18.75rem] px-4 pt-[7.25rem] lg:px-10 lg:pt-[7.8rem]">
+      <div className="ml-auto w-full max-w-[21rem] px-4 pt-[7.25rem] lg:px-10 lg:pt-[7.8rem]">
         <div className="grid gap-2.5 text-right">
           {phrases.map((phrase, index) => {
             const isProcessed = index < currentIndex;
             const isCurrent = index === currentIndex && currentIndex < phrases.length;
             const isCrossing = isCurrent && phase === "crossing";
             const toneClass = isProcessed
-              ? "text-white/34"
+              ? "text-white/42"
               : isCurrent
                 ? "text-white/84"
-                : "text-white/62";
+                : "text-white/60";
             const strikeClass = isProcessed
-              ? "scale-x-100 opacity-34"
+              ? "scale-x-100 opacity-44"
               : isCrossing
-                ? "scale-x-100 opacity-82"
+                ? "scale-x-100 opacity-88"
                 : "scale-x-0 opacity-0";
 
             return (
@@ -117,7 +117,7 @@ function AnimatedHeroOverlay({
                 <span
                   aria-hidden="true"
                   style={transitionStyle}
-                  className={`absolute left-[8%] right-0 top-1/2 h-px -translate-y-1/2 bg-white/46 transition-[opacity,transform] duration-[420ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${strikeClass} origin-right`}
+                  className={`absolute left-[8%] right-0 top-1/2 h-[2px] -translate-y-1/2 bg-[linear-gradient(90deg,rgba(255,255,255,0.14)_0%,rgba(255,255,255,0.66)_26%,rgba(255,255,255,0.92)_50%,rgba(255,255,255,0.66)_74%,rgba(255,255,255,0.14)_100%)] transition-[opacity,transform] duration-[420ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${strikeClass} origin-right`}
                 />
               </div>
             );
