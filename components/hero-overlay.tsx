@@ -8,6 +8,7 @@ type HeroOverlayProps = {
   holdMs?: number;
   exitMs?: number;
   gapMs?: number;
+  onComplete?: () => void;
 };
 
 type OverlayPhase = "visible" | "exiting" | "done";
@@ -21,10 +22,12 @@ export function HeroOverlay({
   holdMs = 1000,
   exitMs = 420,
   gapMs = 140,
+  onComplete,
 }: HeroOverlayProps) {
   const prefersReducedMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState<0 | 1 | 2 | null>(0);
   const [phase, setPhase] = useState<OverlayPhase>("visible");
+  const [hasCompleted, setHasCompleted] = useState(false);
   const transitionStyle = {
     transitionDuration: `${prefersReducedMotion ? 0 : exitMs}ms`,
   } as const;
@@ -34,6 +37,10 @@ export function HeroOverlay({
       const doneTimer = setTimeout(() => {
         setActiveIndex(null);
         setPhase("done");
+        if (!hasCompleted) {
+          setHasCompleted(true);
+          onComplete?.();
+        }
       }, 0);
 
       return () => {
@@ -69,6 +76,10 @@ export function HeroOverlay({
 
       setActiveIndex(null);
       setPhase("done");
+      if (!hasCompleted) {
+        setHasCompleted(true);
+        onComplete?.();
+      }
     }, exitMs);
 
     return () => {
@@ -77,7 +88,17 @@ export function HeroOverlay({
         clearTimeout(gapTimer);
       }
     };
-  }, [activeIndex, exitMs, gapMs, holdMs, phase, phrases.length, prefersReducedMotion]);
+  }, [
+    activeIndex,
+    exitMs,
+    gapMs,
+    holdMs,
+    phase,
+    phrases.length,
+    prefersReducedMotion,
+    hasCompleted,
+    onComplete,
+  ]);
 
   const currentPhrase = activeIndex === null ? null : phrases[activeIndex];
   const isVisible = phase === "visible" && currentPhrase !== null;
@@ -90,9 +111,9 @@ export function HeroOverlay({
       data-hero-overlay
       className="pointer-events-none absolute inset-x-0 top-0 z-20 hidden justify-end px-10 pt-10 lg:flex"
     >
-      <div className="min-h-[3.5rem] max-w-[15rem] text-right">
+      <div className="min-h-[3.5rem] max-w-[18rem] text-right">
         <p
-          className={`relative inline-block text-[clamp(1.9rem,2.7vw,3rem)] font-semibold leading-[0.92] tracking-[-0.085em] ${toneClass} transition-[opacity,transform] duration-[420ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${
+          className={`relative inline-block whitespace-nowrap text-[clamp(1.7rem,2.4vw,2.8rem)] font-semibold leading-[0.92] tracking-[-0.085em] ${toneClass} transition-[opacity,transform] duration-[420ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${
             isVisible ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
           }`}
           style={{ ...overlayTextStyle, ...transitionStyle }}
