@@ -128,7 +128,7 @@ function ProofSmallCard({ card, index }: { card: ProofCard; index: number }) {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(222,214,199,0.12),transparent_34%),linear-gradient(180deg,rgba(17,22,29,0.92),rgba(10,13,17,0.78))]" />
       )}
 
-      <div className="relative p-4 sm:p-6">
+      <div className="relative p-4 sm:p-5">
         <div className="flex items-center justify-between gap-3">
           <p className="font-mono text-[0.7rem] uppercase tracking-[0.32em] text-white/38">
             0{index + 2}
@@ -137,11 +137,11 @@ function ProofSmallCard({ card, index }: { card: ProofCard; index: number }) {
             {card.size}
           </p>
         </div>
-        <h3 className="mt-4 text-xl font-semibold tracking-[-0.05em] text-white">
+        <h3 className="mt-3 text-xl font-semibold tracking-[-0.05em] text-white">
           {card.label}
         </h3>
-        <div className="mt-5 grid gap-3">
-          <div className="rounded-[1.25rem] border border-white/7 bg-[rgba(5,7,10,0.58)] p-3.5 sm:rounded-[1.35rem] sm:p-4">
+        <div className="mt-4 grid gap-2.5">
+          <div className="rounded-[1.25rem] border border-white/7 bg-[rgba(5,7,10,0.58)] p-3 sm:rounded-[1.35rem] sm:p-3.5">
             <p className="kicker text-white/24">Было</p>
             <p className="mt-3 text-sm leading-6 text-white/24 line-through decoration-white/10 sm:hidden">
               {compact.problem}
@@ -150,7 +150,7 @@ function ProofSmallCard({ card, index }: { card: ProofCard; index: number }) {
               {card.problem}
             </p>
           </div>
-          <div className="rounded-[1.35rem] border border-[rgba(222,214,199,0.26)] bg-[rgba(222,214,199,0.15)] p-3.5 sm:rounded-[1.45rem] sm:p-4">
+          <div className="rounded-[1.35rem] border border-[rgba(222,214,199,0.26)] bg-[rgba(222,214,199,0.15)] p-3 sm:rounded-[1.45rem] sm:p-3.5">
             <p className="kicker text-[var(--color-accent)]">Стало</p>
             <p className="mt-3 text-sm leading-6 text-white/96 sm:hidden">
               {compact.outcome}
@@ -381,7 +381,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="w-full lg:pt-[3.25rem]">
+              <div className="w-full lg:pt-[2.25rem]">
                 <div className="w-full rounded-[1.8rem] border border-[rgba(222,214,199,0.14)] bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] p-5 shadow-[0_22px_55px_rgba(0,0,0,0.18)] backdrop-blur-sm sm:rounded-[2rem] sm:p-6">
                   <p className="kicker text-[var(--color-accent)]">{primaryContact.label}</p>
                   <h3 className="mt-4 max-w-[9ch] text-[clamp(2rem,3.5vw,3rem)] font-semibold leading-[0.94] tracking-[-0.08em] text-white">
@@ -417,17 +417,17 @@ export default function Home() {
                     href={contact.href}
                     target="_blank"
                     rel="noreferrer"
-                    className="group flex items-start justify-between gap-4 rounded-[1rem] px-1 py-2 text-white/46 transition-colors duration-200 hover:text-white/74"
+                    className="group flex items-start justify-between gap-4 rounded-[1rem] px-1 py-2 text-white/38 transition-colors duration-200 hover:text-white/62"
                   >
                     <div>
                       <p className="text-sm font-medium">{contact.label}</p>
                       {contact.note ? (
-                        <p className="mt-1 text-xs leading-5 text-white/26 transition-colors duration-200 group-hover:text-white/38">
+                        <p className="mt-1 text-xs leading-5 text-white/20 transition-colors duration-200 group-hover:text-white/30">
                           {contact.note}
                         </p>
                       ) : null}
                     </div>
-                    <span className="text-sm text-white/18 transition-transform duration-200 group-hover:translate-x-1">
+                    <span className="text-sm text-white/12 transition-transform duration-200 group-hover:translate-x-1">
                       →
                     </span>
                   </Link>

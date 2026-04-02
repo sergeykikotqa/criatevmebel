@@ -94,7 +94,7 @@ function AnimatedHeroOverlay({
           ? "text-white/42"
           : isCurrent
             ? "text-white/84"
-            : "text-white/60";
+            : "text-white/52";
         const strikeClass = isProcessed
           ? "scale-x-100 opacity-44"
           : isCrossing
