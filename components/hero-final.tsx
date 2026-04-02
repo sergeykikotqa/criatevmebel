@@ -13,7 +13,7 @@ export function HeroFinal({ finalPhrase, transientPhrases }: HeroFinalProps) {
   const [finalVisible, setFinalVisible] = useState(false);
   const finalPhraseClassName = finalVisible
     ? "opacity-100"
-    : "opacity-100 lg:opacity-0";
+    : "opacity-100 hero:opacity-0";
 
   return (
     <>

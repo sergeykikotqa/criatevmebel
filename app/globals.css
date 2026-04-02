@@ -3,6 +3,7 @@
 @theme inline {
   --font-sans: var(--font-manrope);
   --font-mono: var(--font-pt-mono);
+  --breakpoint-hero: 70rem;
 }
 
 :root {

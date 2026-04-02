@@ -251,7 +251,7 @@ export default function Home() {
               <div className="absolute inset-x-0 bottom-0 h-[58%] bg-[linear-gradient(180deg,transparent,rgba(7,10,14,0.92))]" />
 
               <div className="relative flex h-full flex-col gap-6 p-4 sm:gap-7 sm:p-6 lg:gap-8 lg:p-10">
-                <div className="hidden max-w-[14rem] lg:block">
+                <div className="hidden max-w-[14rem] hero:block">
                   <p className="kicker text-white/40">Временные решения</p>
                   <p className="mt-3 text-sm leading-6 text-white/56">
                     То, что сначала кажется терпимым, а потом раздражает каждый день.

@@ -109,7 +109,7 @@ export function HeroOverlay({
     <div
       aria-hidden="true"
       data-hero-overlay
-      className="pointer-events-none absolute inset-x-0 top-0 z-20 hidden justify-end px-10 pt-10 lg:flex"
+      className="pointer-events-none absolute inset-x-0 top-0 z-20 hidden justify-end px-10 pt-10 hero:flex"
     >
       <div className="min-h-[3.5rem] max-w-[18rem] text-right">
         <p
