@@ -6,12 +6,11 @@ import { useEffect, useState } from "react";
 type HeroOverlayProps = {
   phrases: [string, string, string];
   holdMs?: number;
-  exitMs?: number;
+  crossMs?: number;
   gapMs?: number;
-  onComplete?: () => void;
 };
 
-type OverlayPhase = "visible" | "exiting" | "done";
+type OverlayPhase = "idle" | "crossing";
 
 const overlayTextStyle = {
   textShadow: "0 10px 28px rgba(0, 0, 0, 0.34), 0 3px 10px rgba(0, 0, 0, 0.48)",
@@ -19,96 +18,111 @@ const overlayTextStyle = {
 
 function AnimatedHeroOverlay({
   phrases,
-  holdMs = 1000,
-  exitMs = 420,
+  holdMs = 940,
+  crossMs = 420,
   gapMs = 140,
-  onComplete,
 }: HeroOverlayProps) {
-  const [activeIndex, setActiveIndex] = useState<0 | 1 | 2 | null>(0);
-  const [phase, setPhase] = useState<OverlayPhase>("visible");
-  const [hasCompleted, setHasCompleted] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [phase, setPhase] = useState<OverlayPhase>("idle");
   const transitionStyle = {
-    transitionDuration: `${exitMs}ms`,
+    transitionDuration: `${crossMs}ms`,
   } as const;
 
   useEffect(() => {
-    if (phase === "done" || activeIndex === null) {
-      return;
-    }
+    let cancelled = false;
+    const timers: ReturnType<typeof setTimeout>[] = [];
 
-    if (phase === "visible") {
-      const holdTimer = setTimeout(() => {
-        setPhase("exiting");
-      }, holdMs);
+    const schedule = (delay: number, callback: () => void) => {
+      const timer = setTimeout(callback, delay);
+      timers.push(timer);
+    };
 
-      return () => {
-        clearTimeout(holdTimer);
-      };
-    }
+    const clearTimers = () => {
+      for (const timer of timers) {
+        clearTimeout(timer);
+      }
+    };
 
-    let gapTimer: ReturnType<typeof setTimeout> | null = null;
-    const exitTimer = setTimeout(() => {
-      if (activeIndex < phrases.length - 1) {
-        gapTimer = setTimeout(() => {
-          setActiveIndex((current) =>
-            current === null ? current : ((current + 1) as 0 | 1 | 2),
-          );
-          setPhase("visible");
-        }, gapMs);
+    const runPhrase = (index: number) => {
+      if (cancelled || index >= phrases.length) {
         return;
       }
 
-      setActiveIndex(null);
-      setPhase("done");
-      if (!hasCompleted) {
-        setHasCompleted(true);
-        onComplete?.();
-      }
-    }, exitMs);
+      setCurrentIndex(index);
+      setPhase("idle");
+
+      schedule(holdMs, () => {
+        if (cancelled) {
+          return;
+        }
+
+        setPhase("crossing");
+
+        schedule(crossMs, () => {
+          if (cancelled) {
+            return;
+          }
+
+          const nextIndex = index + 1;
+          setCurrentIndex(nextIndex);
+          setPhase("idle");
+
+          if (nextIndex < phrases.length) {
+            schedule(gapMs, () => {
+              runPhrase(nextIndex);
+            });
+          }
+        });
+      });
+    };
+
+    runPhrase(0);
 
     return () => {
-      clearTimeout(exitTimer);
-      if (gapTimer) {
-        clearTimeout(gapTimer);
-      }
+      cancelled = true;
+      clearTimers();
     };
-  }, [
-    activeIndex,
-    exitMs,
-    gapMs,
-    holdMs,
-    phase,
-    phrases.length,
-    hasCompleted,
-    onComplete,
-  ]);
-
-  const currentPhrase = activeIndex === null ? null : phrases[activeIndex];
-  const isVisible = phase === "visible" && currentPhrase !== null;
-  const toneClass =
-    activeIndex === 1 ? "text-white/88" : activeIndex === 2 ? "text-white/82" : "text-white/92";
+  }, [crossMs, gapMs, holdMs, phrases]);
 
   return (
     <div
       aria-hidden="true"
       data-hero-overlay
-      className="pointer-events-none absolute inset-x-0 top-0 z-20 hidden justify-end px-10 pt-10 hero:flex"
+      className="pointer-events-none absolute inset-x-0 top-0 z-20 hidden hero:flex"
     >
-      <div className="min-h-[4.1rem] w-full max-w-[24rem] text-right">
-        <p
-          className={`relative inline-block whitespace-nowrap text-[clamp(2rem,2.45vw,2.95rem)] font-semibold leading-[0.9] tracking-[-0.085em] ${toneClass} transition-[opacity,transform] duration-[420ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${
-            isVisible ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
-          }`}
-          style={{ ...overlayTextStyle, ...transitionStyle }}
-        >
-          <span>{currentPhrase ?? ""}</span>
-          <span
-            style={transitionStyle}
-            className={`absolute left-0 right-0 top-1/2 h-[2px] -translate-y-1/2 bg-[linear-gradient(90deg,rgba(255,255,255,0.16)_0%,rgba(255,255,255,0.88)_18%,rgba(255,255,255,0.98)_50%,rgba(255,255,255,0.88)_82%,rgba(255,255,255,0.16)_100%)] transition-transform duration-[420ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${
-              isVisible ? "scale-x-0" : "scale-x-100"
-            } origin-left`}
-          />
-        </p>
+      <div className="ml-auto w-full max-w-[18.75rem] px-4 pt-[7.25rem] lg:px-10 lg:pt-[7.8rem]">
+        <div className="grid gap-2.5 text-right">
+          {phrases.map((phrase, index) => {
+            const isProcessed = index < currentIndex;
+            const isCurrent = index === currentIndex && currentIndex < phrases.length;
+            const isCrossing = isCurrent && phase === "crossing";
+            const toneClass = isProcessed
+              ? "text-white/34"
+              : isCurrent
+                ? "text-white/84"
+                : "text-white/62";
+            const strikeClass = isProcessed
+              ? "scale-x-100 opacity-34"
+              : isCrossing
+                ? "scale-x-100 opacity-82"
+                : "scale-x-0 opacity-0";
+
+            return (
+              <div
+                key={phrase}
+                className={`relative flex justify-end text-[clamp(1.8rem,2.25vw,2.9rem)] font-semibold leading-[0.92] tracking-[-0.085em] transition-[color,opacity] duration-[420ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${toneClass}`}
+                style={overlayTextStyle}
+              >
+                <span>{phrase}</span>
+                <span
+                  aria-hidden="true"
+                  style={transitionStyle}
+                  className={`absolute left-[8%] right-0 top-1/2 h-px -translate-y-1/2 bg-white/46 transition-[opacity,transform] duration-[420ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${strikeClass} origin-right`}
+                />
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
@@ -121,5 +135,5 @@ export function HeroOverlay(props: HeroOverlayProps) {
     return null;
   }
 
-  return <AnimatedHeroOverlay {...props} />;
+  return <AnimatedHeroOverlay key={props.phrases.join("|")} {...props} />;
 }

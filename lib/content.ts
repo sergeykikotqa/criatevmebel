@@ -78,7 +78,7 @@ export const landingContent: LandingContent = {
     primaryCta: "Обсудить проект",
     secondaryCta: "Хочу такой стиль",
     transientPhrases: ["пока сойдёт", "потом переделаем", "ну вроде норм"],
-    finalPhrase: "хорошо сделано",
+    finalPhrase: "нормально сделано",
     image: {
       src: publicAsset("/hero-lounge.jpg"),
       alt: "Светлая гостиная с встроенной мебелью, мягким светом и ощущением простора.",
