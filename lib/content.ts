@@ -14,7 +14,6 @@ export type HeroContent = {
   title: string;
   description: string;
   primaryCta: string;
-  secondaryCta?: string;
   transientPhrases: [string, string, string];
   finalPhrase: string;
   image: ImageAsset;
@@ -76,7 +75,6 @@ export const landingContent: LandingContent = {
     description:
       'Для тех, у кого "временно", "потом заменим" и "ну вроде нормально" затянулось на годы.',
     primaryCta: "Обсудить проект",
-    secondaryCta: "Хочу такой стиль",
     transientPhrases: ["пока сойдёт", "потом переделаем", "ну вроде норм"],
     finalPhrase: "хорошо сделано",
     image: {

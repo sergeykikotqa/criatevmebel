@@ -8,7 +8,7 @@ import type { HeroContent } from "@/lib/content";
 type HeroSceneProps = Pick<HeroContent, "transientPhrases" | "finalPhrase">;
 
 const finalPlateBaseClass =
-  "absolute inset-x-0 bottom-0 rounded-[1.7rem] border border-[rgba(222,214,199,0.2)] bg-[linear-gradient(180deg,rgba(9,13,18,0.82),rgba(9,13,18,0.52))] px-4 py-4 backdrop-blur-md transition-all duration-[220ms] ease-out sm:rounded-[1.8rem] sm:px-5 hero:rounded-[1.8rem]";
+  "absolute inset-x-0 bottom-0 rounded-[1.7rem] border border-[rgba(222,214,199,0.2)] bg-[linear-gradient(180deg,rgba(9,13,18,0.82),rgba(9,13,18,0.52))] px-4 py-4 backdrop-blur-md transition-all duration-[300ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] sm:rounded-[1.8rem] sm:px-5 hero:rounded-[1.8rem]";
 
 export function HeroScene({ transientPhrases, finalPhrase }: HeroSceneProps) {
   const [finalVisible, setFinalVisible] = useState(false);

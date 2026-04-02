@@ -223,18 +223,6 @@ export default function Home() {
               >
                 {hero.primaryCta}
               </Link>
-              {hero.secondaryCta ? (
-                <div className="hidden sm:block">
-                  <Link
-                    href={siteConfig.telegramUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="button-secondary text-sm sm:text-base"
-                  >
-                    {hero.secondaryCta}
-                  </Link>
-                </div>
-              ) : null}
             </div>
           </div>
 
