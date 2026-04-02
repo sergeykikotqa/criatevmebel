@@ -5,24 +5,31 @@ import { HeroOverlay } from "@/components/hero-overlay";
 import { Reveal } from "@/components/reveal";
 import { landingContent, type ContactLink, type ProofCard } from "@/lib/content";
 
-function SectionHeader({
+function SectionRail({
   kicker,
   title,
   description,
+  bridge,
 }: {
   kicker: string;
   title: string;
   description?: string;
+  bridge?: string;
 }) {
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-[24rem]">
       <p className="kicker">{kicker}</p>
-      <h2 className="mt-5 text-3xl font-semibold tracking-[-0.06em] text-white sm:text-4xl lg:text-5xl">
+      <h2 className="mt-5 text-[clamp(2rem,4vw,3.7rem)] font-semibold leading-[0.96] tracking-[-0.075em] text-white">
         {title}
       </h2>
       {description ? (
-        <p className="mt-5 max-w-2xl text-base leading-7 text-[var(--color-muted)] sm:text-lg">
+        <p className="mt-5 max-w-[22rem] text-base leading-7 text-[var(--color-muted)] sm:text-lg">
           {description}
+        </p>
+      ) : null}
+      {bridge ? (
+        <p className="mt-4 max-w-[21rem] text-sm leading-6 text-white/46 sm:text-[0.98rem] sm:leading-7">
+          {bridge}
         </p>
       ) : null}
     </div>
@@ -37,10 +44,6 @@ const mobileProofCopy: Record<string, { problem: string; outcome: string }> = {
   "Шкаф": {
     problem: "Внутри вечный компромисс.",
     outcome: "Хранение закрывает вопрос.",
-  },
-  "Комната": {
-    problem: "Пространство мешает ритму.",
-    outcome: "Комната работает на вас.",
   },
 };
 
@@ -78,7 +81,7 @@ function ProofLeadCard({ card }: { card: ProofCard }) {
           </span>
         </div>
 
-          <div className="grid gap-4 lg:max-w-[30rem]">
+        <div className="grid gap-4 lg:max-w-[30rem]">
           <div className="rounded-[1.6rem] border border-white/7 bg-[rgba(5,7,10,0.62)] p-4 backdrop-blur-md sm:rounded-[1.8rem] sm:p-5">
             <p className="kicker text-white/26">Было</p>
             <p className="mt-4 text-sm leading-6 text-white/24 line-through decoration-white/10 sm:hidden">
@@ -137,7 +140,7 @@ function ProofSmallCard({ card, index }: { card: ProofCard; index: number }) {
         <h3 className="mt-4 text-xl font-semibold tracking-[-0.05em] text-white">
           {card.label}
         </h3>
-          <div className="mt-5 grid gap-3">
+        <div className="mt-5 grid gap-3">
           <div className="rounded-[1.25rem] border border-white/7 bg-[rgba(5,7,10,0.58)] p-3.5 sm:rounded-[1.35rem] sm:p-4">
             <p className="kicker text-white/24">Было</p>
             <p className="mt-3 text-sm leading-6 text-white/24 line-through decoration-white/10 sm:hidden">
@@ -292,78 +295,70 @@ export default function Home() {
       </section>
 
       <section className="mx-auto max-w-[var(--max-width)] px-5 py-12 sm:px-6 sm:py-16 lg:px-10 lg:pb-8 lg:pt-16">
-        <Reveal>
-          <SectionHeader
-            kicker="Было → стало"
-            title="Уровень чувствуется не по словам, а по тому, как пространство работает."
-            description="Здесь один главный акцент и два доказательства: качество видно сразу."
-          />
-        </Reveal>
-
-        <div className="mt-10 grid gap-4 sm:mt-12 lg:grid-cols-[minmax(0,1.28fr)_minmax(0,0.92fr)]">
+        <div className="grid gap-10 lg:grid-cols-[minmax(16rem,0.62fr)_minmax(0,1.38fr)] lg:items-start lg:gap-12">
           <Reveal>
-            <ProofLeadCard card={leadProof} />
+            <div className="lg:pt-2">
+              <SectionRail
+                kicker="Было → стало"
+                title="Уровень чувствуется не по словам, а по тому, как пространство работает."
+                description="Здесь один главный акцент и два доказательства: качество видно сразу."
+                bridge="Разница продаётся быстрее всего в тот момент, когда пространство перестаёт спорить с повседневной жизнью."
+              />
+            </div>
           </Reveal>
 
-          <div className="grid gap-4">
-            {secondaryProofs.map((card, index) => (
-              <Reveal key={card.label} delay={0.06 * (index + 1)} y={16}>
-                <ProofSmallCard card={card} index={index} />
-              </Reveal>
-            ))}
+          <div className="grid gap-4 xl:grid-cols-[minmax(0,1.12fr)_minmax(0,0.88fr)]">
+            <Reveal>
+              <ProofLeadCard card={leadProof} />
+            </Reveal>
+
+            <div className="grid gap-4">
+              {secondaryProofs.map((card, index) => (
+                <Reveal key={card.label} delay={0.06 * (index + 1)} y={16}>
+                  <ProofSmallCard card={card} index={index} />
+                </Reveal>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-[var(--max-width)] px-5 py-10 sm:px-6 sm:py-12 lg:px-10 lg:pb-14 lg:pt-2">
-        <Reveal>
-          <SectionHeader
-            kicker="Простота"
-            title="Нормальный процесс не выглядит как марафон согласований."
-            description="Он идёт легко, почти редакционно: одна мысль, один шаг, один понятный результат."
-          />
-        </Reveal>
+      <section className="mx-auto max-w-[var(--max-width)] px-5 py-10 sm:px-6 sm:py-12 lg:px-10 lg:pb-16 lg:pt-6">
+        <div className="grid gap-10 lg:grid-cols-[minmax(16rem,0.62fr)_minmax(0,1.38fr)] lg:items-start lg:gap-12">
+          <Reveal>
+            <div className="lg:pt-1">
+              <SectionRail
+                kicker="Простота"
+                title="Нормальный процесс не выглядит как марафон согласований."
+                description="Он идёт легко, почти редакционно: одна мысль, один шаг, один понятный результат."
+                bridge="Хороший процесс не требует от вас учиться новой системе. Он просто убирает лишнее между задачей и готовым результатом."
+              />
+            </div>
+          </Reveal>
 
-        <div className="mt-7 grid gap-4 md:hidden">
-          {steps.map((step, index) => (
-            <Reveal key={step.title} delay={0.04 * index} y={12}>
-              <article className="rounded-[1.5rem] border border-white/8 bg-white/[0.02] p-4">
-                <p className="font-mono text-[0.7rem] uppercase tracking-[0.32em] text-white/34">
-                  0{index + 1}
-                </p>
-                <h3 className="mt-4 text-lg font-semibold tracking-[-0.05em] text-white">
-                  {step.title}
-                </h3>
-                <p className="mt-2 text-sm leading-6 text-white/56">
-                  {step.description}
-                </p>
-              </article>
-            </Reveal>
-          ))}
-        </div>
-
-        <div className="relative mt-8 hidden md:block">
-          <div className="absolute left-0 right-0 top-[1.2rem] hidden h-px bg-white/10 xl:block" />
-
-          <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-4 xl:gap-6">
-            {steps.map((step, index) => (
-              <Reveal key={step.title} delay={0.05 * index} y={14}>
-                <article className="relative xl:pt-10">
-                  <span className="absolute left-0 top-[0.45rem] h-6 w-6 rounded-full border border-[rgba(222,214,199,0.28)] bg-[var(--color-bg)]" />
-                  <div className="max-w-[16rem] pl-10">
-                    <p className="font-mono text-[0.7rem] uppercase tracking-[0.32em] text-white/34">
-                      0{index + 1}
-                    </p>
-                    <h3 className="mt-4 text-xl font-semibold tracking-[-0.05em] text-white">
-                      {step.title}
-                    </h3>
-                    <p className="mt-3 text-sm leading-6 text-white/56">
-                      {step.description}
-                    </p>
-                  </div>
-                </article>
-              </Reveal>
-            ))}
+          <div className="border-y border-white/8">
+            <div>
+              {steps.map((step, index) => (
+                <Reveal key={step.title} delay={0.05 * index} y={12}>
+                  <article className="grid gap-4 border-b border-white/8 py-5 last:border-b-0 sm:grid-cols-[4.5rem_minmax(0,1fr)] sm:gap-6 sm:py-6">
+                    <div className="flex items-center gap-4 text-white/34">
+                      <span className="font-mono text-[0.7rem] uppercase tracking-[0.32em]">
+                        0{index + 1}
+                      </span>
+                      <span className="h-px flex-1 bg-white/10 sm:hidden" />
+                    </div>
+                    <div className="max-w-[27rem]">
+                      <h3 className="text-xl font-semibold tracking-[-0.05em] text-white sm:text-[1.45rem]">
+                        {step.title}
+                      </h3>
+                      <p className="mt-3 text-sm leading-6 text-white/56 sm:text-base sm:leading-7">
+                        {step.description}
+                      </p>
+                    </div>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -372,78 +367,75 @@ export default function Home() {
         <Reveal>
           <div className="relative overflow-hidden rounded-[2.35rem] border border-white/10 bg-[linear-gradient(145deg,rgba(18,22,29,0.98),rgba(9,12,16,0.94))] px-5 py-10 shadow-[0_34px_90px_rgba(0,0,0,0.3)] sm:rounded-[2.9rem] sm:px-10 sm:py-16 lg:px-14 lg:py-18">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(222,214,199,0.12),transparent_30%),radial-gradient(circle_at_90%_100%,rgba(255,255,255,0.05),transparent_30%)]" />
-            <div className="relative grid gap-8 lg:grid-cols-[minmax(0,1fr)_23rem] lg:items-end">
-              <div className="max-w-4xl">
+            <div className="relative grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(22rem,0.82fr)] lg:items-start lg:gap-8">
+              <div className="max-w-[34rem]">
                 <p className="kicker">Финал</p>
-                <h2 className="mt-6 text-4xl font-semibold tracking-[-0.085em] text-white sm:text-5xl lg:text-[4.1rem] lg:leading-[0.95]">
+                <h2 className="mt-6 max-w-[10ch] text-4xl font-semibold tracking-[-0.085em] text-white sm:text-5xl lg:text-[4.1rem] lg:leading-[0.95]">
                   {finalCta.title}
                 </h2>
-                <p className="mt-6 max-w-2xl text-base leading-7 text-[var(--color-muted)] sm:text-lg">
+                <p className="mt-6 max-w-[30rem] text-base leading-7 text-[var(--color-muted)] sm:text-lg">
                   {finalCta.description}
+                </p>
+                <p className="mt-5 max-w-[24rem] text-sm leading-6 text-white/46 sm:text-base sm:leading-7">
+                  Один короткий диалог в Telegram заменяет длинную цепочку из разных точек входа и лишних уточнений.
                 </p>
               </div>
 
-              <div className="rounded-[1.6rem] border border-[rgba(222,214,199,0.12)] bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.018))] p-5 backdrop-blur-sm sm:rounded-[1.8rem] sm:p-6">
-                <p className="kicker text-[var(--color-accent)]">Точка входа</p>
-                <Link
-                  href={primaryContact.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group mt-5 block rounded-[1.45rem] border border-[rgba(222,214,199,0.22)] bg-[linear-gradient(180deg,rgba(222,214,199,0.14),rgba(222,214,199,0.06))] px-4 py-4 shadow-[0_18px_42px_rgba(0,0,0,0.2)]"
-                >
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <p className="text-lg font-semibold tracking-[-0.03em] text-white">
-                        {primaryContact.label}
-                      </p>
-                      {primaryContact.note ? (
-                        <p className="mt-2 text-sm leading-6 text-white/62">
-                          {primaryContact.note}
-                        </p>
-                      ) : null}
-                    </div>
-                    <span className="text-sm text-white/46 transition-transform duration-200 group-hover:translate-x-1">
-                      →
-                    </span>
-                  </div>
-                </Link>
-                <Link
-                  href={siteConfig.telegramUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="button-primary mt-5 w-full justify-between text-base"
-                >
-                  {finalCta.buttonLabel}
-                </Link>
-                <div className="mt-6 h-px w-20 bg-[linear-gradient(90deg,rgba(222,214,199,0.68),transparent)]" />
-                <div className="mt-5">
-                  <p className="kicker text-white/30">Дополнительно</p>
-                </div>
-                <div className="mt-3 grid gap-1.5">
-                  {secondaryContactLinks.map((contact) => (
-                    <Link
-                      key={contact.label}
-                      href={contact.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="group flex items-start justify-between gap-4 rounded-[1rem] px-1 py-2"
-                    >
-                      <div>
-                        <p className="text-sm font-medium text-white/58">{contact.label}</p>
-                        {contact.note ? (
-                          <p className="mt-1 text-xs leading-5 text-white/32">{contact.note}</p>
-                        ) : null}
-                      </div>
-                      <span className="text-sm text-white/18 transition-transform duration-200 group-hover:translate-x-1">
-                        →
-                      </span>
-                    </Link>
-                  ))}
+              <div className="w-full lg:pt-[4.25rem]">
+                <div className="w-full rounded-[1.8rem] border border-[rgba(222,214,199,0.14)] bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] p-5 shadow-[0_22px_55px_rgba(0,0,0,0.18)] backdrop-blur-sm sm:rounded-[2rem] sm:p-6">
+                  <p className="kicker text-[var(--color-accent)]">{primaryContact.label}</p>
+                  <h3 className="mt-4 max-w-[9ch] text-[clamp(2rem,3.5vw,3rem)] font-semibold leading-[0.94] tracking-[-0.08em] text-white">
+                    Самый быстрый вход в проект
+                  </h3>
+                  <p className="mt-4 max-w-[18rem] text-sm leading-6 text-white/62 sm:text-base sm:leading-7">
+                    {primaryContact.note ?? "Главный вход в проект"}
+                  </p>
+                  <Link
+                    href={primaryContact.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="button-primary mt-8 w-full justify-between text-base"
+                  >
+                    {finalCta.buttonLabel}
+                  </Link>
+                  <p className="mt-3 text-xs leading-5 text-white/28">
+                    Без длинной формы, без второй точки входа и без лишнего шага между интересом и разговором.
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </Reveal>
+
+        {secondaryContactLinks.length ? (
+          <Reveal delay={0.08} y={10}>
+            <div className="mt-4 border-t border-white/8 pt-4">
+              <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
+                {secondaryContactLinks.map((contact) => (
+                  <Link
+                    key={contact.label}
+                    href={contact.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group flex items-start justify-between gap-4 rounded-[1rem] px-1 py-2 text-white/46 transition-colors duration-200 hover:text-white/74"
+                  >
+                    <div>
+                      <p className="text-sm font-medium">{contact.label}</p>
+                      {contact.note ? (
+                        <p className="mt-1 text-xs leading-5 text-white/26 transition-colors duration-200 group-hover:text-white/38">
+                          {contact.note}
+                        </p>
+                      ) : null}
+                    </div>
+                    <span className="text-sm text-white/18 transition-transform duration-200 group-hover:translate-x-1">
+                      →
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+        ) : null}
       </section>
     </main>
   );
