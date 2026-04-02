@@ -85,53 +85,56 @@ function AnimatedHeroOverlay({
   }, [crossMs, gapMs, holdMs, phrases]);
 
   return (
-    <div
-      aria-hidden="true"
-      data-hero-overlay
-      className="pointer-events-none absolute inset-x-0 top-0 z-20 hidden hero:flex"
-    >
-      <div className="ml-auto w-full max-w-[21rem] px-4 pt-[7.25rem] lg:px-10 lg:pt-[7.8rem]">
-        <div className="grid gap-2.5 text-right">
-          {phrases.map((phrase, index) => {
-            const isProcessed = index < currentIndex;
-            const isCurrent = index === currentIndex && currentIndex < phrases.length;
-            const isCrossing = isCurrent && phase === "crossing";
-            const toneClass = isProcessed
-              ? "text-white/42"
-              : isCurrent
-                ? "text-white/84"
-                : "text-white/60";
-            const strikeClass = isProcessed
-              ? "scale-x-100 opacity-44"
-              : isCrossing
-                ? "scale-x-100 opacity-88"
-                : "scale-x-0 opacity-0";
+    <div aria-hidden="true" data-hero-overlay className="grid gap-1.5 text-right">
+      {phrases.map((phrase, index) => {
+        const isProcessed = index < currentIndex;
+        const isCurrent = index === currentIndex && currentIndex < phrases.length;
+        const isCrossing = isCurrent && phase === "crossing";
+        const toneClass = isProcessed
+          ? "text-white/42"
+          : isCurrent
+            ? "text-white/84"
+            : "text-white/60";
+        const strikeClass = isProcessed
+          ? "scale-x-100 opacity-44"
+          : isCrossing
+            ? "scale-x-100 opacity-88"
+            : "scale-x-0 opacity-0";
 
-            return (
-              <div
-                key={phrase}
-                className={`relative flex justify-end text-[clamp(1.8rem,2.25vw,2.9rem)] font-semibold leading-[0.92] tracking-[-0.085em] transition-[color,opacity] duration-[420ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${toneClass}`}
-                style={overlayTextStyle}
-              >
-                <span>{phrase}</span>
-                <span
-                  aria-hidden="true"
-                  style={transitionStyle}
-                  className={`absolute left-[8%] right-0 top-1/2 h-[2px] -translate-y-1/2 bg-[linear-gradient(90deg,rgba(255,255,255,0.14)_0%,rgba(255,255,255,0.66)_26%,rgba(255,255,255,0.92)_50%,rgba(255,255,255,0.66)_74%,rgba(255,255,255,0.14)_100%)] transition-[opacity,transform] duration-[420ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${strikeClass} origin-right`}
-                />
-              </div>
-            );
-          })}
-        </div>
-      </div>
+        return (
+          <div
+            key={phrase}
+            className={`relative ml-auto w-fit whitespace-nowrap text-[clamp(1.55rem,1.95vw,2.3rem)] font-semibold leading-[0.9] tracking-[-0.075em] transition-[color,opacity] duration-[420ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${toneClass}`}
+            style={overlayTextStyle}
+          >
+            <span>{phrase}</span>
+            <span
+              aria-hidden="true"
+              style={transitionStyle}
+              className={`absolute left-[8%] right-0 top-1/2 h-[2px] -translate-y-1/2 bg-[linear-gradient(90deg,rgba(255,255,255,0.14)_0%,rgba(255,255,255,0.66)_26%,rgba(255,255,255,0.92)_50%,rgba(255,255,255,0.66)_74%,rgba(255,255,255,0.14)_100%)] transition-[opacity,transform] duration-[420ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${strikeClass} origin-right`}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }
 
 export function HeroOverlay(props: HeroOverlayProps) {
+  const [hasMounted, setHasMounted] = useState(false);
   const prefersReducedMotion = useReducedMotion();
 
-  if (prefersReducedMotion) {
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      setHasMounted(true);
+    });
+
+    return () => {
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  if (!hasMounted || prefersReducedMotion) {
     return null;
   }
 

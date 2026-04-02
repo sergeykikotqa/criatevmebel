@@ -250,24 +250,41 @@ export default function Home() {
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.06),transparent_32%)] opacity-70" />
               <div className="absolute inset-x-0 bottom-0 h-[58%] bg-[linear-gradient(180deg,transparent,rgba(7,10,14,0.92))]" />
 
-              <div className="relative flex h-full flex-col gap-6 p-4 sm:gap-7 sm:p-6 lg:gap-8 lg:p-10">
-                <div className="hidden max-w-[14rem] hero:block">
-                  <p className="kicker text-white/40">Временные решения</p>
-                  <p className="mt-3 text-sm leading-6 text-white/56">
-                    То, что сначала кажется терпимым, а потом раздражает каждый день.
-                  </p>
-                </div>
-
-                <div className="flex flex-1 items-end">
-                  <div className="w-fit max-w-[13.5rem] rounded-[1.6rem] border border-[rgba(222,214,199,0.2)] bg-[linear-gradient(180deg,rgba(9,13,18,0.82),rgba(9,13,18,0.52))] px-4 py-4 backdrop-blur-md sm:max-w-[15rem] sm:px-5 hero:w-full hero:max-w-[18rem] lg:rounded-[1.8rem] lg:border-white/14 lg:bg-[linear-gradient(180deg,rgba(10,14,19,0.78),rgba(10,14,19,0.44))] lg:px-6 lg:py-5">
+              <div className="absolute inset-0 z-10 flex flex-col gap-6 p-4 sm:gap-7 sm:p-6 lg:p-10">
+                <div className="flex flex-1 items-end hero:hidden">
+                  <div className="w-fit max-w-[13.5rem] rounded-[1.6rem] border border-[rgba(222,214,199,0.2)] bg-[linear-gradient(180deg,rgba(9,13,18,0.82),rgba(9,13,18,0.52))] px-4 py-4 backdrop-blur-md sm:max-w-[15rem] sm:px-5">
                     <p className="kicker text-[var(--color-accent)]">Остаётся</p>
-                    <p className="mt-3 text-[clamp(1.8rem,8vw,2.7rem)] font-semibold leading-[0.92] tracking-[-0.085em] text-white sm:mt-4 lg:text-[clamp(2rem,3.2vw,3.7rem)] lg:leading-none">
+                    <p className="mt-3 text-[clamp(1.8rem,8vw,2.7rem)] font-semibold leading-[0.92] tracking-[-0.085em] text-white sm:mt-4">
                       {hero.finalPhrase}
                     </p>
                   </div>
                 </div>
 
-                <HeroOverlay phrases={hero.transientPhrases} />
+                <div className="relative hidden h-full w-full hero:flex hero:flex-1">
+                  <div className="relative h-full w-full">
+                    <div className="relative z-20 max-w-[13rem]">
+                      <p className="kicker text-white/40">Временные решения</p>
+                      <p className="mt-3 text-sm leading-6 text-white/56">
+                        То, что сначала кажется терпимым, а потом раздражает каждый день.
+                      </p>
+                    </div>
+
+                    <div className="absolute inset-y-0 right-0 w-full max-w-[21rem]">
+                      <div className="relative flex h-full flex-col">
+                        <div className="pointer-events-none absolute inset-x-0 top-[5.15rem] bottom-[9.35rem] z-10">
+                          <HeroOverlay phrases={hero.transientPhrases} />
+                        </div>
+
+                        <div className="relative z-20 mt-auto w-full rounded-[1.8rem] border border-white/6 bg-[linear-gradient(180deg,rgba(13,17,22,0.68),rgba(11,15,20,0.44))] px-5 py-4 backdrop-blur-md">
+                          <p className="kicker text-[var(--color-accent)]">Остаётся</p>
+                          <p className="mt-3 max-w-[8ch] text-[clamp(2.05rem,3vw,3.55rem)] font-semibold leading-[0.92] tracking-[-0.085em] text-white">
+                            {hero.finalPhrase}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
