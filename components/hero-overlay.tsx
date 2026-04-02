@@ -1,16 +1,30 @@
 "use client";
 
 import { useReducedMotion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type MutableRefObject } from "react";
 
 type HeroOverlayProps = {
   phrases: [string, string, string];
   holdMs?: number;
   crossMs?: number;
   gapMs?: number;
+  settleMs?: number;
+  reducedMotionMs?: number;
+  onComplete?: () => void;
+  dimmed?: boolean;
 };
 
 type OverlayPhase = "idle" | "crossing";
+
+type AnimatedHeroOverlayProps = {
+  phrases: [string, string, string];
+  holdMs?: number;
+  crossMs?: number;
+  gapMs?: number;
+  settleMs?: number;
+  hasCompletedRef: MutableRefObject<boolean>;
+  onCompleteRef: MutableRefObject<HeroOverlayProps["onComplete"]>;
+};
 
 const overlayTextStyle = {
   textShadow: "0 10px 28px rgba(0, 0, 0, 0.34), 0 3px 10px rgba(0, 0, 0, 0.48)",
@@ -21,7 +35,10 @@ function AnimatedHeroOverlay({
   holdMs = 940,
   crossMs = 420,
   gapMs = 140,
-}: HeroOverlayProps) {
+  settleMs = 120,
+  hasCompletedRef,
+  onCompleteRef,
+}: AnimatedHeroOverlayProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [phase, setPhase] = useState<OverlayPhase>("idle");
   const transitionStyle = {
@@ -71,6 +88,13 @@ function AnimatedHeroOverlay({
             schedule(gapMs, () => {
               runPhrase(nextIndex);
             });
+          } else {
+            schedule(settleMs, () => {
+              if (!cancelled && !hasCompletedRef.current) {
+                hasCompletedRef.current = true;
+                onCompleteRef.current?.();
+              }
+            });
           }
         });
       });
@@ -82,7 +106,7 @@ function AnimatedHeroOverlay({
       cancelled = true;
       clearTimers();
     };
-  }, [crossMs, gapMs, holdMs, phrases]);
+  }, [crossMs, gapMs, hasCompletedRef, holdMs, onCompleteRef, phrases, settleMs]);
 
   return (
     <div aria-hidden="true" data-hero-overlay className="grid gap-1.5 text-right">
@@ -120,9 +144,40 @@ function AnimatedHeroOverlay({
   );
 }
 
-export function HeroOverlay(props: HeroOverlayProps) {
+function StaticHeroOverlay({ phrases }: Pick<HeroOverlayProps, "phrases">) {
+  return (
+    <div aria-hidden="true" data-hero-overlay className="grid gap-1.5 text-right">
+      {phrases.map((phrase, index) => {
+        const toneClass = index === 0 ? "text-white/84" : "text-white/52";
+
+        return (
+          <div
+            key={phrase}
+            className={`relative ml-auto w-fit whitespace-nowrap text-[clamp(1.55rem,1.95vw,2.3rem)] font-semibold leading-[0.9] tracking-[-0.075em] ${toneClass}`}
+            style={overlayTextStyle}
+          >
+            <span>{phrase}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+export function HeroOverlay({
+  phrases,
+  holdMs,
+  crossMs,
+  gapMs,
+  settleMs,
+  reducedMotionMs = 400,
+  onComplete,
+  dimmed = false,
+}: HeroOverlayProps) {
   const [hasMounted, setHasMounted] = useState(false);
   const prefersReducedMotion = useReducedMotion();
+  const hasCompletedRef = useRef(false);
+  const onCompleteRef = useRef(onComplete);
 
   useEffect(() => {
     const frame = requestAnimationFrame(() => {
@@ -134,9 +189,51 @@ export function HeroOverlay(props: HeroOverlayProps) {
     };
   }, []);
 
-  if (!hasMounted || prefersReducedMotion) {
-    return null;
-  }
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
 
-  return <AnimatedHeroOverlay key={props.phrases.join("|")} {...props} />;
+  useEffect(() => {
+    hasCompletedRef.current = false;
+  }, [phrases]);
+
+  useEffect(() => {
+    if (!hasMounted || !prefersReducedMotion) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      if (!hasCompletedRef.current) {
+        hasCompletedRef.current = true;
+        onCompleteRef.current?.();
+      }
+    }, reducedMotionMs);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [hasMounted, prefersReducedMotion, reducedMotionMs]);
+
+  return (
+    <div
+      className={`transition-opacity duration-[180ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] ${
+        dimmed ? "opacity-40" : "opacity-100"
+      }`}
+    >
+      {!hasMounted || prefersReducedMotion ? (
+        <StaticHeroOverlay phrases={phrases} />
+      ) : (
+        <AnimatedHeroOverlay
+          key={phrases.join("|")}
+          phrases={phrases}
+          holdMs={holdMs}
+          crossMs={crossMs}
+          gapMs={gapMs}
+          settleMs={settleMs}
+          hasCompletedRef={hasCompletedRef}
+          onCompleteRef={onCompleteRef}
+        />
+      )}
+    </div>
+  );
 }

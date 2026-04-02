@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { HeroOverlay } from "@/components/hero-overlay";
+import { HeroScene } from "@/components/hero-scene";
 import { Reveal } from "@/components/reveal";
 import { landingContent, type ContactLink, type ProofCard } from "@/lib/content";
 
@@ -239,7 +239,7 @@ export default function Home() {
           </div>
 
           <div className="pt-1 sm:pt-2 lg:pt-0">
-            <div className="relative isolate min-h-[13.5rem] overflow-hidden rounded-[2.1rem] border border-white/10 shadow-[0_30px_90px_rgba(0,0,0,0.35)] sm:min-h-[15rem] lg:min-h-[31rem] lg:rounded-[2.75rem]">
+            <div className="relative isolate min-h-[15.5rem] overflow-hidden rounded-[2.1rem] border border-white/10 shadow-[0_30px_90px_rgba(0,0,0,0.35)] sm:min-h-[16.75rem] lg:min-h-[31rem] lg:rounded-[2.75rem]">
               <Image
                 src={hero.image.src}
                 alt={hero.image.alt}
@@ -253,42 +253,10 @@ export default function Home() {
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.06),transparent_32%)] opacity-70" />
               <div className="absolute inset-x-0 bottom-0 h-[58%] bg-[linear-gradient(180deg,transparent,rgba(7,10,14,0.92))]" />
 
-              <div className="absolute inset-0 z-10 flex flex-col gap-6 p-4 sm:gap-7 sm:p-6 lg:p-10">
-                <div className="flex flex-1 items-end hero:hidden">
-                  <div className="w-fit max-w-[13.5rem] rounded-[1.6rem] border border-[rgba(222,214,199,0.2)] bg-[linear-gradient(180deg,rgba(9,13,18,0.82),rgba(9,13,18,0.52))] px-4 py-4 backdrop-blur-md sm:max-w-[15rem] sm:px-5">
-                    <p className="kicker text-[var(--color-accent)]">Остаётся</p>
-                    <p className="mt-3 text-[clamp(1.8rem,8vw,2.7rem)] font-semibold leading-[0.92] tracking-[-0.085em] text-white sm:mt-4">
-                      {hero.finalPhrase}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="relative hidden h-full w-full hero:flex hero:flex-1">
-                  <div className="relative h-full w-full">
-                    <div className="relative z-20 max-w-[13rem]">
-                      <p className="kicker text-white/40">Временные решения</p>
-                      <p className="mt-3 text-sm leading-6 text-white/56">
-                        То, что сначала кажется терпимым, а потом раздражает каждый день.
-                      </p>
-                    </div>
-
-                    <div className="absolute inset-y-0 right-0 w-full max-w-[21rem]">
-                      <div className="relative flex h-full flex-col">
-                        <div className="pointer-events-none absolute inset-x-0 top-[5.15rem] bottom-[9.35rem] z-10">
-                          <HeroOverlay phrases={hero.transientPhrases} />
-                        </div>
-
-                        <div className="relative z-20 mt-auto w-full rounded-[1.8rem] border border-white/6 bg-[linear-gradient(180deg,rgba(13,17,22,0.68),rgba(11,15,20,0.44))] px-5 py-4 backdrop-blur-md">
-                          <p className="kicker text-[var(--color-accent)]">Остаётся</p>
-                          <p className="mt-3 max-w-[8ch] text-[clamp(2.05rem,3vw,3.55rem)] font-semibold leading-[0.92] tracking-[-0.085em] text-white">
-                            {hero.finalPhrase}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <HeroScene
+                transientPhrases={hero.transientPhrases}
+                finalPhrase={hero.finalPhrase}
+              />
             </div>
           </div>
         </div>
@@ -385,10 +353,10 @@ export default function Home() {
                 <div className="w-full rounded-[1.8rem] border border-[rgba(222,214,199,0.14)] bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] p-5 shadow-[0_22px_55px_rgba(0,0,0,0.18)] backdrop-blur-sm sm:rounded-[2rem] sm:p-6">
                   <p className="kicker text-[var(--color-accent)]">{primaryContact.label}</p>
                   <h3 className="mt-4 max-w-[9ch] text-[clamp(2rem,3.5vw,3rem)] font-semibold leading-[0.94] tracking-[-0.08em] text-white">
-                    Самый быстрый вход в проект
+                    Быстрый старт
                   </h3>
                   <p className="mt-4 max-w-[18rem] text-sm leading-6 text-white/62 sm:text-base sm:leading-7">
-                    {primaryContact.note ?? "Главный вход в проект"}
+                    {primaryContact.note ?? "Один короткий диалог вместо длинной формы и лишних шагов."}
                   </p>
                   <Link
                     href={primaryContact.href}

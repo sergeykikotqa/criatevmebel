@@ -142,7 +142,7 @@ export const landingContent: LandingContent = {
       telegram: {
         label: "Telegram",
         href: "https://t.me/",
-        note: "Главный вход в проект",
+        note: "Один короткий диалог вместо длинной формы и лишних шагов.",
       },
       vk: {
         label: "VK",
