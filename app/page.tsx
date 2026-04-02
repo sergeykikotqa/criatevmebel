@@ -368,7 +368,7 @@ export default function Home() {
           <div className="relative overflow-hidden rounded-[2.35rem] border border-white/10 bg-[linear-gradient(145deg,rgba(18,22,29,0.98),rgba(9,12,16,0.94))] px-5 py-10 shadow-[0_34px_90px_rgba(0,0,0,0.3)] sm:rounded-[2.9rem] sm:px-10 sm:py-16 lg:px-14 lg:py-18">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(222,214,199,0.12),transparent_30%),radial-gradient(circle_at_90%_100%,rgba(255,255,255,0.05),transparent_30%)]" />
             <div className="relative grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(22rem,0.82fr)] lg:items-start lg:gap-8">
-              <div className="max-w-[34rem]">
+              <div className="max-w-[32rem]">
                 <p className="kicker">Финал</p>
                 <h2 className="mt-6 max-w-[10ch] text-4xl font-semibold tracking-[-0.085em] text-white sm:text-5xl lg:text-[4.1rem] lg:leading-[0.95]">
                   {finalCta.title}
@@ -376,12 +376,12 @@ export default function Home() {
                 <p className="mt-6 max-w-[30rem] text-base leading-7 text-[var(--color-muted)] sm:text-lg">
                   {finalCta.description}
                 </p>
-                <p className="mt-5 max-w-[24rem] text-sm leading-6 text-white/46 sm:text-base sm:leading-7">
+                <p className="mt-5 max-w-[24rem] text-sm leading-6 text-white/54 sm:text-base sm:leading-7">
                   Один короткий диалог в Telegram заменяет длинную цепочку из разных точек входа и лишних уточнений.
                 </p>
               </div>
 
-              <div className="w-full lg:pt-[4.25rem]">
+              <div className="w-full lg:pt-[3.25rem]">
                 <div className="w-full rounded-[1.8rem] border border-[rgba(222,214,199,0.14)] bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] p-5 shadow-[0_22px_55px_rgba(0,0,0,0.18)] backdrop-blur-sm sm:rounded-[2rem] sm:p-6">
                   <p className="kicker text-[var(--color-accent)]">{primaryContact.label}</p>
                   <h3 className="mt-4 max-w-[9ch] text-[clamp(2rem,3.5vw,3rem)] font-semibold leading-[0.94] tracking-[-0.08em] text-white">
