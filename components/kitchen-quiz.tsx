@@ -17,10 +17,10 @@ import {
   normalizeAnswersForContactMode,
   normalizePhone,
   normalizeTelegramContact,
+  normalizeStoredDraft,
   QUIZ_DRAFT_KEY,
   QUIZ_SOURCE,
   QUIZ_VERSION,
-  restoreStableScreen,
   type ContactMode,
   type KitchenAnswers,
   type KitchenLeadPayload,
@@ -868,26 +868,6 @@ function readStoredDraft() {
   } catch {
     return null;
   }
-}
-
-function normalizeStoredDraft(storedDraft: KitchenQuizDraft, fallbackDraft: KitchenQuizDraft): KitchenQuizDraft {
-  const nextDraft: KitchenQuizDraft = {
-    currentScreen: restoreStableScreen(storedDraft.currentScreen),
-    answers: normalizeAnswersForContactMode({
-      ...fallbackDraft.answers,
-      ...storedDraft.answers,
-    }),
-    sessionId: storedDraft.sessionId || fallbackDraft.sessionId,
-    utm: { ...fallbackDraft.utm, ...storedDraft.utm },
-    startedAt: storedDraft.startedAt || fallbackDraft.startedAt,
-    hasSeenPreview: Boolean(storedDraft.hasSeenPreview),
-  };
-
-  if (!hasStoredAnswers(nextDraft)) {
-    return fallbackDraft;
-  }
-
-  return nextDraft;
 }
 
 function isQuizScreenValue(value: unknown): value is QuizScreen {

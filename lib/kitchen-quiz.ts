@@ -213,6 +213,34 @@ export function restoreStableScreen(screen: QuizScreen) {
   return screen;
 }
 
+export function normalizeStoredDraft(storedDraft: KitchenQuizDraft, fallbackDraft: KitchenQuizDraft): KitchenQuizDraft {
+  const nextDraft: KitchenQuizDraft = {
+    currentScreen: restoreStableScreen(storedDraft.currentScreen),
+    answers: normalizeAnswersForContactMode({
+      ...fallbackDraft.answers,
+      ...storedDraft.answers,
+    }),
+    sessionId: storedDraft.sessionId || fallbackDraft.sessionId,
+    utm: { ...fallbackDraft.utm, ...storedDraft.utm },
+    startedAt: storedDraft.startedAt || fallbackDraft.startedAt,
+    hasSeenPreview: Boolean(storedDraft.hasSeenPreview),
+  };
+
+  const hasRestoreableProgress = Boolean(
+    nextDraft.answers.kitchenType ||
+      nextDraft.answers.kitchenSize ||
+      nextDraft.answers.budget ||
+      nextDraft.answers.timeline ||
+      nextDraft.answers.contactValue?.trim(),
+  );
+
+  if (!hasRestoreableProgress || !hasStoredAnswers(nextDraft)) {
+    return fallbackDraft;
+  }
+
+  return nextDraft;
+}
+
 export function deriveKitchenProfile(answers: KitchenAnswers): DerivedKitchenProfile {
   const recommendedLayout = answers.kitchenType ? LAYOUT_LABELS[answers.kitchenType] : "Формат подберем";
   const spaceLabel = answers.kitchenSize ? SPACE_LABELS[answers.kitchenSize] : "Размер уточним";
