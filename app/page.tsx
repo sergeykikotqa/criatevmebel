@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { HeroScene } from "@/components/hero-scene";
+import { KitchenQuiz } from "@/components/kitchen-quiz";
 import { Reveal } from "@/components/reveal";
-import { landingContent, type ContactLink, type ProofCard } from "@/lib/content";
+import { landingContent, type ProofCard } from "@/lib/content";
 
 function SectionRail({
   kicker,
@@ -37,13 +38,13 @@ function SectionRail({
 }
 
 const mobileProofCopy: Record<string, { problem: string; outcome: string }> = {
-  "Кухня": {
-    problem: "Лишние движения каждый день.",
-    outcome: "У всего есть своё место.",
+  "Угловая кухня": {
+    problem: "Мало рабочей поверхности.",
+    outcome: "Кухня работает спокойно каждый день.",
   },
-  "Шкаф": {
-    problem: "Внутри вечный компромисс.",
-    outcome: "Хранение закрывает вопрос.",
+  "Пенал до потолка": {
+    problem: "Хранение быстро выходит из-под контроля.",
+    outcome: "У вещей есть понятное место.",
   },
 };
 
@@ -77,7 +78,7 @@ function ProofLeadCard({ card }: { card: ProofCard }) {
             </h3>
           </div>
           <span className="rounded-full border border-white/10 bg-black/10 px-3 py-2 font-mono text-[0.64rem] uppercase tracking-[0.28em] text-white/42 backdrop-blur-sm">
-            proof
+            проект
           </span>
         </div>
 
@@ -112,18 +113,16 @@ function ProofSmallCard({ card, index }: { card: ProofCard; index: number }) {
   return (
     <article className="group relative overflow-hidden rounded-[1.95rem] border border-white/10 bg-[linear-gradient(180deg,rgba(17,22,29,0.92),rgba(10,13,17,0.78))] shadow-[0_20px_60px_rgba(0,0,0,0.24)] sm:rounded-[2.15rem]">
       {card.image ? (
-        <>
-          <div className="relative aspect-[5/4] overflow-hidden sm:aspect-[4/3]">
-            <Image
-              src={card.image.src}
-              alt={card.image.alt}
-              fill
-              sizes="(max-width: 1024px) 100vw, 32vw"
-              className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
-            />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,10,13,0.16),rgba(8,10,13,0.52)_72%,rgba(8,10,13,0.76))]" />
-          </div>
-        </>
+        <div className="relative aspect-[5/4] overflow-hidden sm:aspect-[4/3]">
+          <Image
+            src={card.image.src}
+            alt={card.image.alt}
+            fill
+            sizes="(max-width: 1024px) 100vw, 32vw"
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,10,13,0.16),rgba(8,10,13,0.52)_72%,rgba(8,10,13,0.76))]" />
+        </div>
       ) : (
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(222,214,199,0.12),transparent_34%),linear-gradient(180deg,rgba(17,22,29,0.92),rgba(10,13,17,0.78))]" />
       )}
@@ -166,15 +165,17 @@ function ProofSmallCard({ card, index }: { card: ProofCard; index: number }) {
 }
 
 export default function Home() {
-  const { hero, proofCards, steps, finalCta, siteConfig } = landingContent;
+  const { hero, proofCards, steps, finalCta, quiz, trust, siteConfig } = landingContent;
   const leadProof = proofCards.find((card) => card.size === "large") ?? proofCards[0];
   const secondaryProofs = proofCards.filter((card) => card !== leadProof);
-  const secondaryContactLinks = [
-    siteConfig.contacts.vk,
-    siteConfig.contacts.avito,
-    siteConfig.contacts.map,
-  ].filter((contact): contact is ContactLink => Boolean(contact));
-  const primaryContact = siteConfig.contacts.telegram;
+  const directContactLinks = [
+    siteConfig.contacts.telegram,
+    {
+      label: "Телефон",
+      href: `tel:${siteConfig.phone.replace(/\D/g, "")}`,
+      note: siteConfig.phone,
+    },
+  ];
 
   return (
     <main className="relative overflow-x-clip pb-8">
@@ -183,12 +184,7 @@ export default function Home() {
           <p className="font-mono text-[0.72rem] uppercase tracking-[0.38em] text-white/78">
             {siteConfig.brandName}
           </p>
-          <Link
-            href={siteConfig.telegramUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="button-secondary text-sm"
-          >
+          <Link href="#kitchen-quiz" className="button-secondary text-sm">
             {hero.primaryCta}
           </Link>
         </div>
@@ -210,19 +206,25 @@ export default function Home() {
               {hero.title}
             </h1>
 
-            <p className="hero-enter hero-enter-delay-2 mt-4 max-w-[27rem] text-[0.97rem] leading-7 text-[var(--color-muted)] sm:mt-6 sm:text-xl sm:leading-8">
+            <p className="hero-enter hero-enter-delay-2 mt-4 max-w-[31rem] text-[0.97rem] leading-7 text-[var(--color-muted)] sm:mt-6 sm:text-xl sm:leading-8">
               {hero.description}
             </p>
 
             <div className="hero-enter hero-enter-delay-3 mt-6 flex flex-wrap items-center gap-3 sm:mt-9 sm:gap-4">
-              <Link
-                href={siteConfig.telegramUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="button-primary text-sm sm:text-base"
-              >
+              <Link href="#kitchen-quiz" className="button-primary text-sm sm:text-base">
                 {hero.primaryCta}
               </Link>
+            </div>
+
+            <div className="hero-enter hero-enter-delay-3 mt-5 flex flex-wrap gap-2.5 sm:mt-6">
+              {hero.microTrust.map((item) => (
+                <span
+                  key={item}
+                  className="rounded-full border border-white/8 bg-white/[0.03] px-3 py-2 text-sm text-white/62"
+                >
+                  {item}
+                </span>
+              ))}
             </div>
           </div>
 
@@ -250,16 +252,39 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[var(--max-width)] px-5 py-12 sm:px-6 sm:py-16 lg:px-10 lg:pb-8 lg:pt-16">
+      <section
+        id="kitchen-quiz"
+        className="mx-auto max-w-[var(--max-width)] scroll-mt-24 px-5 py-12 sm:px-6 sm:py-16 lg:px-10 lg:py-18"
+      >
+        <Reveal y={16}>
+          <KitchenQuiz
+            city={siteConfig.city}
+            telegramUrl={siteConfig.telegramUrl}
+            content={quiz}
+          />
+        </Reveal>
+      </section>
+
+      <section className="mx-auto max-w-[var(--max-width)] px-5 py-8 sm:px-6 sm:py-12 lg:px-10 lg:pb-8 lg:pt-10">
         <div className="grid gap-10 lg:grid-cols-[minmax(16rem,0.62fr)_minmax(0,1.38fr)] lg:items-start lg:gap-12">
           <Reveal>
             <div className="lg:pt-2">
               <SectionRail
-                kicker="Было → стало"
-                title="Уровень чувствуется не по словам, а по тому, как пространство работает."
-                description="Здесь один главный акцент и два доказательства: качество видно сразу."
-                bridge="Разница продаётся быстрее всего в тот момент, когда пространство перестаёт спорить с повседневной жизнью."
+                kicker="Доверие + проекты"
+                title="Кухня должна быть удобной с первого дня"
+                description="Подбираем решение под планировку, привычки и бюджет — без временных компромиссов."
               />
+
+              <div className="mt-7 grid gap-2.5">
+                {trust.bullets.map((item) => (
+                  <div
+                    key={item}
+                    className="rounded-[1.15rem] border border-white/8 bg-white/[0.03] px-4 py-3 text-sm leading-6 text-white/72"
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
             </div>
           </Reveal>
 
@@ -279,15 +304,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[var(--max-width)] px-5 py-10 sm:px-6 sm:py-12 lg:px-10 lg:pb-16 lg:pt-6">
+      <section className="mx-auto max-w-[var(--max-width)] px-5 py-10 sm:px-6 sm:py-12 lg:px-10 lg:pb-16 lg:pt-8">
         <div className="grid gap-10 lg:grid-cols-[minmax(16rem,0.62fr)_minmax(0,1.38fr)] lg:items-start lg:gap-12">
           <Reveal>
             <div className="lg:pt-1">
               <SectionRail
-                kicker="Простота"
-                title="Нормальный процесс не выглядит как марафон согласований."
-                description="Он идёт легко, почти редакционно: одна мысль, один шаг, один понятный результат."
-                bridge="Хороший процесс не требует от вас учиться новой системе. Он просто убирает лишнее между задачей и готовым результатом."
+                kicker="Как проходит работа"
+                title="От заявки до установки"
+                description="Короткий путь от первого ответа до готовой кухни."
               />
             </div>
           </Reveal>
@@ -332,66 +356,57 @@ export default function Home() {
                 <p className="mt-6 max-w-[30rem] text-base leading-7 text-[var(--color-muted)] sm:text-lg">
                   {finalCta.description}
                 </p>
-                <p className="mt-5 max-w-[24rem] text-sm leading-6 text-white/54 sm:text-base sm:leading-7">
-                  Один короткий диалог в Telegram заменяет длинную цепочку из разных точек входа и лишних уточнений.
-                </p>
               </div>
 
               <div className="w-full lg:pt-[2.25rem]">
                 <div className="w-full rounded-[1.8rem] border border-[rgba(222,214,199,0.14)] bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] p-5 shadow-[0_22px_55px_rgba(0,0,0,0.18)] backdrop-blur-sm sm:rounded-[2rem] sm:p-6">
-                  <p className="kicker text-[var(--color-accent)]">{primaryContact.label}</p>
+                  <p className="kicker text-[var(--color-accent)]">Короткий путь</p>
                   <h3 className="mt-4 max-w-[9ch] text-[clamp(2rem,3.5vw,3rem)] font-semibold leading-[0.94] tracking-[-0.08em] text-white">
-                    Быстрый старт
+                    Запустить расчет
                   </h3>
                   <p className="mt-4 max-w-[18rem] text-sm leading-6 text-white/62 sm:text-base sm:leading-7">
-                    {primaryContact.note ?? "Один короткий диалог вместо длинной формы и лишних шагов."}
+                    Короткий опрос, после которого мы свяжемся с вами уже с понятными параметрами кухни.
                   </p>
                   <Link
-                    href={primaryContact.href}
-                    target="_blank"
-                    rel="noreferrer"
+                    href="#kitchen-quiz"
                     className="button-primary mt-8 w-full justify-between text-base"
                   >
                     {finalCta.buttonLabel}
                   </Link>
-                  <p className="mt-3 text-xs leading-5 text-white/28">
-                    Без длинной формы, без второй точки входа и без лишнего шага между интересом и разговором.
-                  </p>
                 </div>
               </div>
             </div>
           </div>
         </Reveal>
 
-        {secondaryContactLinks.length ? (
-          <Reveal delay={0.08} y={10}>
-            <div className="mt-4 border-t border-white/8 pt-4">
-              <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
-                {secondaryContactLinks.map((contact) => (
-                  <Link
-                    key={contact.label}
-                    href={contact.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="group flex items-start justify-between gap-4 rounded-[1rem] px-1 py-2 text-white/38 transition-colors duration-200 hover:text-white/62"
-                  >
-                    <div>
-                      <p className="text-sm font-medium">{contact.label}</p>
-                      {contact.note ? (
-                        <p className="mt-1 text-xs leading-5 text-white/20 transition-colors duration-200 group-hover:text-white/30">
-                          {contact.note}
-                        </p>
-                      ) : null}
-                    </div>
-                    <span className="text-sm text-white/12 transition-transform duration-200 group-hover:translate-x-1">
-                      →
-                    </span>
-                  </Link>
-                ))}
-              </div>
+        <Reveal delay={0.08} y={10}>
+          <div className="mt-4 border-t border-white/8 pt-4">
+            <p className="text-sm text-white/42">{finalCta.directContactLabel}</p>
+            <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
+              {directContactLinks.map((contact) => (
+                <Link
+                  key={contact.label}
+                  href={contact.href}
+                  target={contact.href.startsWith("http") ? "_blank" : undefined}
+                  rel={contact.href.startsWith("http") ? "noreferrer" : undefined}
+                  className="group flex items-start justify-between gap-4 rounded-[1rem] px-1 py-2 text-white/42 transition-colors duration-200 hover:text-white/68"
+                >
+                  <div>
+                    <p className="text-sm font-medium">{contact.label}</p>
+                    {contact.note ? (
+                      <p className="mt-1 text-xs leading-5 text-white/24 transition-colors duration-200 group-hover:text-white/34">
+                        {contact.note}
+                      </p>
+                    ) : null}
+                  </div>
+                  <span className="text-sm text-white/14 transition-transform duration-200 group-hover:translate-x-1">
+                    →
+                  </span>
+                </Link>
+              ))}
             </div>
-          </Reveal>
-        ) : null}
+          </div>
+        </Reveal>
       </section>
     </main>
   );

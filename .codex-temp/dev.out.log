@@ -1,0 +1,13 @@
+
+> criatev@0.1.0 dev
+> next dev --hostname 127.0.0.1 --port 3001
+
+▲ Next.js 16.2.1 (Turbopack)
+- Local:         http://127.0.0.1:3001
+- Network:       http://127.0.0.1:3001
+✓ Ready in 371ms
+
+ GET / 200 in 420ms (next.js: 136ms, application-code: 284ms)
+ GET / 200 in 61ms (next.js: 8ms, application-code: 53ms)
+ GET / 200 in 65ms (next.js: 5ms, application-code: 61ms)
+ GET / 200 in 69ms (next.js: 3ms, application-code: 66ms)

@@ -14,6 +14,7 @@ export type HeroContent = {
   title: string;
   description: string;
   primaryCta: string;
+  microTrust: string[];
   transientPhrases: [string, string, string];
   finalPhrase: string;
   image: ImageAsset;
@@ -36,18 +37,88 @@ export type FinalCta = {
   title: string;
   description: string;
   buttonLabel: string;
-  image?: ImageAsset;
+  directContactLabel: string;
+};
+
+export type QuizOption<Value extends string = string> = {
+  value: Value;
+  label: string;
+};
+
+export type QuizQuestion<Value extends string = string> = {
+  title: string;
+  options: QuizOption<Value>[];
+};
+
+export type ContactQuestion = {
+  phoneLabel: string;
+  telegramLabel: string;
+  phoneIntentTitle: string;
+  phoneIntentCallLabel: string;
+  phoneIntentMessageLabel: string;
+  phonePlaceholder: string;
+  telegramPlaceholder: string;
+  phoneIntentError: string;
+  phoneError: string;
+  telegramError: string;
+  submitLabel: string;
+};
+
+export type QuizContent = {
+  missionLabel: string;
+  introTitle: string;
+  introBody: string;
+  introButtonLabel: string;
+  progressLabel: string;
+  profileLabels: {
+    layout: string;
+    space: string;
+    budget: string;
+    timeline: string;
+    recommendation: string;
+  };
+  previewTitle: string;
+  previewButton: string;
+  contactTitle: string;
+  contactHint: string;
+  socialProof: string;
+  resumeTitle: string;
+  resumeDescription: string;
+  continueLabel: string;
+  previousLabel: string;
+  budgetLoaderTitle: string;
+  submitPendingTitle: string;
+  submitResultTitle: string;
+  successTitle: string;
+  successBody: string;
+  successPrompt: string;
+  successButtonLabel: string;
+  fallbackTitle: string;
+  fallbackBody: string;
+  fallbackButtonLabel: string;
+  questions: {
+    kitchenType: QuizQuestion<"straight" | "corner" | "u-shaped" | "unknown">;
+    kitchenSize: QuizQuestion<"lt2" | "2to3" | "3to5" | "gt5">;
+    budget: QuizQuestion<"lt100" | "100to200" | "200to400" | "gt400">;
+    timeline: QuizQuestion<"urgent" | "month" | "research">;
+    contact: ContactQuestion;
+  };
+};
+
+export type TrustContent = {
+  title: string;
+  bullets: string[];
 };
 
 export type SiteConfig = {
   brandName: string;
+  companyName: string;
+  city: string;
+  phone: string;
   telegramUrl: string;
   seoDescription: string;
   contacts: {
     telegram: ContactLink;
-    vk?: ContactLink;
-    avito?: ContactLink;
-    map?: ContactLink;
     address?: string;
   };
 };
@@ -57,6 +128,8 @@ export type LandingContent = {
   proofCards: ProofCard[];
   steps: StepItem[];
   finalCta: FinalCta;
+  quiz: QuizContent;
+  trust: TrustContent;
   siteConfig: SiteConfig;
 };
 
@@ -68,94 +141,180 @@ const publicAsset = (path: string) => {
   return `${basePath}${path}`;
 };
 
+const city = "Иркутск";
+
 export const landingContent: LandingContent = {
   hero: {
-    eyebrow: "Мебель на заказ",
+    eyebrow: `Кухни на заказ в ${city}`,
     title: "Мебель, после которой не хочется ничего переделывать",
     description:
-      'Для тех, у кого "временно", "потом заменим" и "ну вроде нормально" затянулось на годы.',
-    primaryCta: "Обсудить проект",
+      "Для тех, у кого «временно», «потом заменим» и «ну вроде нормально» затянулось на годы.",
+    primaryCta: "Рассчитать кухню",
+    microTrust: ["Бесплатный расчет", "Срок от 7 дней", "Гарантия 2 года"],
     transientPhrases: ["пока сойдёт", "потом переделаем", "ну вроде норм"],
     finalPhrase: "хорошо сделано",
     image: {
       src: publicAsset("/hero-lounge.jpg"),
-      alt: "Светлая гостиная с встроенной мебелью, мягким светом и ощущением простора.",
+      alt: "Светлая кухня-гостиная с встроенной мебелью и спокойным современным интерьером.",
     },
   },
   proofCards: [
     {
-      label: "Кухня",
+      label: "Угловая кухня",
       size: "large",
       problem:
-        "Столешница занята, хранение неудобное, каждое движение лишнее.",
+        "Мало рабочей поверхности, техника мешает проходу, а хранение быстро превращается в хаос.",
       outcome:
-        "У всего есть своё место, и кухня работает спокойно, без лишней суеты.",
+        "Рабочая зона собрана, проход свободный, и кухня работает спокойно каждый день.",
       image: {
         src: publicAsset("/proof-kitchen.jpg"),
-        alt: "Минималистичная кухня в светлых тонах с чёткой геометрией фасадов.",
+        alt: "Светлая угловая кухня с чистой рабочей зоной и встроенной техникой.",
       },
     },
     {
-      label: "Шкаф",
+      label: "Пенал до потолка",
       size: "small",
       problem:
-        "Внутри вечный компромисс: что-то мешает, цепляет и выглядит временно.",
-      outcome: "Собран под вас и закрывает вопрос хранения без раздражения.",
+        "Часть вещей всегда остается на виду, а внутри не хватает места под повседневные задачи.",
+      outcome:
+        "Хранение закрывает вопрос, кухня выглядит собранно, а нужные вещи остаются под рукой.",
       image: {
         src: publicAsset("/proof-wardrobe.jpg"),
-        alt: "Сдержанный встроенный шкаф в мягкой светлой палитре.",
+        alt: "Высокий светлый шкаф-пенал с аккуратной внутренней организацией хранения.",
       },
     },
   ],
   steps: [
     {
-      title: "Вы говорите, что бесит",
-      description: "Коротко и по-человечески, без сложных формулировок.",
+      title: "Оставляете заявку",
+      description: "Коротко отвечаете на несколько вопросов и сразу задаете бюджет, размер и срок.",
     },
     {
-      title: "Мы собираем решение",
-      description: "Под ваши размеры, привычки и реальный ритм жизни.",
+      title: "Получаете расчет и проект",
+      description: "Мы подбираем формат кухни под вашу планировку и отправляем понятный ориентир по стоимости.",
     },
     {
-      title: "Делаем аккуратно",
-      description: "Без лишней суеты и бесконечных кругов согласований.",
+      title: "Согласуем детали",
+      description: "Материалы, наполнение и размеры собираются под ваш реальный сценарий использования.",
     },
     {
-      title: "Вы просто живёте",
-      description: "И не думаете, что это надо бы однажды переделать.",
+      title: "Производим и устанавливаем",
+      description: "Делаем кухню аккуратно и доводим все до состояния, в котором ничего не хочется переделывать.",
     },
   ],
   finalCta: {
-    title: "Хватит подстраивать жизнь под временные решения.",
+    title: "Рассчитайте стоимость кухни за 2 минуты",
     description:
-      "Сделаем пространство, которое выглядит собранно, ощущается спокойно и работает как надо каждый день.",
-    buttonLabel: "Обсудить проект",
+      "Ответьте на несколько вопросов и получите расчет под ваш бюджет и размеры.",
+    buttonLabel: "Рассчитать кухню",
+    directContactLabel: "Нужно быстрее? Напишите нам напрямую:",
+  },
+  quiz: {
+    missionLabel: "Без регистрации и звонков — просто ответьте на несколько вопросов",
+    introTitle: "Подберем кухню под ваш бюджет и размеры",
+    introBody: "Ответ займет 1–2 минуты и поможет сразу рассчитать стоимость",
+    introButtonLabel: "Начать расчет",
+    progressLabel: "Шаг {current} из {total}",
+    profileLabels: {
+      layout: "Планировка",
+      space: "Пространство",
+      budget: "Бюджет",
+      timeline: "Срок",
+      recommendation: "Комментарий",
+    },
+    previewTitle: "Профиль кухни собран",
+    previewButton: "Продолжить к срокам и расчету",
+    contactTitle: "Оставьте контакт, чтобы получить расчет и варианты кухонь",
+    contactHint: "Ответим в течение 10–15 минут",
+    socialProof: "Более 150 кухонь уже подобрано под клиентов",
+    resumeTitle: "Продолжить расчет?",
+    resumeDescription: "Мы сохранили ваши ответы.",
+    continueLabel: "Продолжить",
+    previousLabel: "Назад",
+    budgetLoaderTitle: "Подбираем варианты под ваш бюджет...",
+    submitPendingTitle: "Формируем расчет под ваши параметры...",
+    submitResultTitle: "Мы подобрали для вас 2–3 варианта кухонь под ваш бюджет",
+    successTitle: "Готово! Мы получили вашу заявку",
+    successBody: "Расчет и варианты кухонь отправим сегодня, чтобы вы сразу увидели понятный следующий шаг.",
+    successPrompt: "Если хотите ускорить — напишите нам в Telegram",
+    successButtonLabel: "Открыть Telegram",
+    fallbackTitle: "Заявка не отправилась автоматически, но мы уже почти получили ваши данные.",
+    fallbackBody: "Нажмите кнопку ниже и напишите нам — мы сразу продолжим расчет.",
+    fallbackButtonLabel: "Открыть Telegram",
+    questions: {
+      kitchenType: {
+        title: "Какую кухню планируете?",
+        options: [
+          { value: "straight", label: "Прямая" },
+          { value: "corner", label: "Угловая" },
+          { value: "u-shaped", label: "П-образная" },
+          { value: "unknown", label: "Пока не знаю" },
+        ],
+      },
+      kitchenSize: {
+        title: "Примерный размер кухни?",
+        options: [
+          { value: "lt2", label: "До 2 м" },
+          { value: "2to3", label: "2–3 м" },
+          { value: "3to5", label: "3–5 м" },
+          { value: "gt5", label: "Более 5 м" },
+        ],
+      },
+      budget: {
+        title: "Бюджет проекта?",
+        options: [
+          { value: "lt100", label: "До 100 000 ₽" },
+          { value: "100to200", label: "100–200 тыс." },
+          { value: "200to400", label: "200–400 тыс." },
+          { value: "gt400", label: "400+ тыс." },
+        ],
+      },
+      timeline: {
+        title: "Когда планируете?",
+        options: [
+          { value: "urgent", label: "Срочно (до 2 недель)" },
+          { value: "month", label: "В течение месяца" },
+          { value: "research", label: "Пока рассматриваю" },
+        ],
+      },
+      contact: {
+        phoneLabel: "Телефон",
+        telegramLabel: "Telegram",
+        phoneIntentTitle: "Как с вами удобнее связаться?",
+        phoneIntentCallLabel: "Перезвоните мне",
+        phoneIntentMessageLabel: "Напишите мне",
+        phonePlaceholder: "+7 (___) ___-__-__",
+        telegramPlaceholder: "@username",
+        phoneIntentError: "Выберите, как с вами удобнее связаться.",
+        phoneError: "Введите корректный телефон, чтобы получить расчет.",
+        telegramError: "Укажите Telegram в удобном для связи формате.",
+        submitLabel: "Получить расчет и варианты кухонь",
+      },
+    },
+  },
+  trust: {
+    title: "Почему выбирают нас",
+    bullets: [
+      "Более 10 лет на рынке",
+      "Более 150 кухонь под заказ",
+      "Собственное производство",
+      "Работаем по договору",
+      "Гарантия до 2 лет",
+    ],
   },
   siteConfig: {
     brandName: "MESTO",
+    companyName: "MESTO Кухни",
+    city,
+    phone: "+7 (999) 000-00-00",
     telegramUrl: "https://t.me/",
     seoDescription:
-      "Брендовый лендинг для мебели на заказ: мягкий свет, точная композиция и ощущение пространства, которое наконец работает как надо.",
+      "Кухни на заказ в Иркутске: расчет за 2 минуты, проект за 1 день, производство и установка под ваш бюджет и размеры.",
     contacts: {
       telegram: {
         label: "Telegram",
         href: "https://t.me/",
-        note: "Один короткий диалог вместо длинной формы и лишних шагов.",
-      },
-      vk: {
-        label: "VK",
-        href: "https://vk.com/",
-        note: "Лента и сообщения",
-      },
-      avito: {
-        label: "Авито",
-        href: "https://www.avito.ru/",
-        note: "Объявления и примеры работ",
-      },
-      map: {
-        label: "Карта",
-        href: "https://yandex.ru/maps/",
-        note: "Открыть на Яндекс Картах",
+        note: "Ответим и продолжим расчет без лишней переписки.",
       },
     },
   },

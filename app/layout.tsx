@@ -18,18 +18,20 @@ const ptMono = PT_Mono({
   display: "swap",
 });
 
+const metadataTitle = `${landingContent.siteConfig.companyName} — кухни на заказ в ${landingContent.siteConfig.city}`;
+
 export const metadata: Metadata = {
-  title: `${landingContent.siteConfig.brandName} — мебель, после которой не хочется ничего переделывать`,
+  title: metadataTitle,
   description: landingContent.siteConfig.seoDescription,
   openGraph: {
-    title: `${landingContent.siteConfig.brandName} — мебель, после которой не хочется ничего переделывать`,
+    title: metadataTitle,
     description: landingContent.siteConfig.seoDescription,
     locale: "ru_RU",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: `${landingContent.siteConfig.brandName} — мебель, после которой не хочется ничего переделывать`,
+    title: metadataTitle,
     description: landingContent.siteConfig.seoDescription,
   },
 };
