@@ -114,6 +114,7 @@ export type SiteConfig = {
   brandName: string;
   companyName: string;
   city: string;
+  cityInLocation: string;
   phone: string;
   telegramUrl: string;
   seoDescription: string;
@@ -142,10 +143,11 @@ const publicAsset = (path: string) => {
 };
 
 const city = "Иркутск";
+const cityInLocation = "Иркутске";
 
 export const landingContent: LandingContent = {
   hero: {
-    eyebrow: `Кухни на заказ в ${city}`,
+    eyebrow: `Кухни на заказ в ${cityInLocation}`,
     title: "Мебель, после которой не хочется ничего переделывать",
     description:
       "Для тех, у кого «временно», «потом заменим» и «ну вроде нормально» затянулось на годы.",
@@ -306,10 +308,11 @@ export const landingContent: LandingContent = {
     brandName: "MESTO",
     companyName: "MESTO Кухни",
     city,
+    cityInLocation,
     phone: "+7 (999) 000-00-00",
     telegramUrl: "https://t.me/",
     seoDescription:
-      "Кухни на заказ в Иркутске: расчет за 2 минуты, проект за 1 день, производство и установка под ваш бюджет и размеры.",
+      `Кухни на заказ в ${cityInLocation}: расчет за 2 минуты, проект за 1 день, производство и установка под ваш бюджет и размеры.`,
     contacts: {
       telegram: {
         label: "Telegram",

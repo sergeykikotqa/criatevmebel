@@ -18,7 +18,7 @@ const ptMono = PT_Mono({
   display: "swap",
 });
 
-const metadataTitle = `${landingContent.siteConfig.companyName} — кухни на заказ в ${landingContent.siteConfig.city}`;
+const metadataTitle = `${landingContent.siteConfig.companyName} — кухни на заказ в ${landingContent.siteConfig.cityInLocation}`;
 
 export const metadata: Metadata = {
   title: metadataTitle,
