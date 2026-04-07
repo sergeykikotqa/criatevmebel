@@ -154,7 +154,7 @@ export const landingContent: LandingContent = {
     primaryCta: "Рассчитать кухню",
     microTrust: ["Бесплатный расчет", "Срок от 7 дней", "Гарантия 2 года"],
     transientPhrases: ["пока сойдёт", "потом переделаем", "ну вроде норм"],
-    finalPhrase: "хорошо сделано",
+    finalPhrase: "хорошо сделано.",
     image: {
       src: publicAsset("/hero-lounge.jpg"),
       alt: "Светлая кухня-гостиная с встроенной мебелью и спокойным современным интерьером.",
